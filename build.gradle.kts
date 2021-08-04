@@ -35,6 +35,7 @@ kotlin {
             dependencies {
                 implementation("io.ktor:ktor-client-core:$ktorVersion")
                 implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.1")
+                kotlin("reflect")
             }
         }
         val commonTest by getting {
@@ -47,6 +48,7 @@ kotlin {
             dependencies {
                 implementation("io.ktor:ktor-client-java:$ktorVersion")
                 implementation("org.brotli:dec:0.1.2")
+                implementation("org.jsoup:jsoup:1.14.1")
             }
         }
         val jvmTest by getting
