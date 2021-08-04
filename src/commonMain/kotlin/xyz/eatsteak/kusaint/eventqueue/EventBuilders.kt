@@ -1,65 +1,115 @@
 package xyz.eatsteak.kusaint.eventqueue
 
-fun customClientInfos(id: String) = EventBuilder("Custom_ClientInfos") {
-    putFirst("Id", id)
-    putFirst("WindowOpenerExists", "false")
-    putFirst("ClientURL", "https://ecc.ssu.ac.kr/sap/bc/webdynpro/sap/zcmw2100?sap-language=KO#")
-    putFirst("ClientWidth", "1440")
-    putFirst("ClientHeight", "790")
-    putFirst("DocumentDomain", "ssu.ac.kr")
-    putFirst("IsTopWindow", "true")
-    putFirst("ParentAccessible", "true")
+import xyz.eatsteak.kusaint.eventqueue.model.UcfAction
+import xyz.eatsteak.kusaint.eventqueue.model.UcfCardinality
+import xyz.eatsteak.kusaint.eventqueue.model.UcfResponseData
 
-    putSecond("ClientAction", "enqueue")
-    putSecond("ResponseData", "delta")
+
+object ClientInspectorEventBuilders {
+
+    fun notify(id: String, data: String) = EventBuilder("ClientInspector", "Notify") {
+        parameter("Id", id)
+        parameter("Data", data)
+
+        ucfParameter {
+            responseData = UcfResponseData.DELTA
+            enqueueCardinality = UcfCardinality.SINGLE
+        }
+    }
+
 }
 
-fun clientInspectorNotify(id: String, data: String) = EventBuilder("ClientInspector_Notify") {
-    putFirst("Id", id)
-    putFirst("Data", data)
+object CustomEventBuilders {
+    fun clientInfos(id: String) = EventBuilder("Custom", "ClientInfos") {
+        parameter("Id", id)
+        parameter("WindowOpenerExists", "false")
+        parameter("ClientURL", "https://ecc.ssu.ac.kr/sap/bc/webdynpro/sap/zcmw2100?sap-language=KO#")
+        parameter("ClientWidth", "1440")
+        parameter("ClientHeight", "790")
+        parameter("DocumentDomain", "ssu.ac.kr")
+        parameter("IsTopWindow", "true")
+        parameter("ParentAccessible", "true")
 
-    putSecond("ResponseData", "delta")
-    putSecond("EnqueueCardinality", "single")
+        ucfParameter {
+            action = UcfAction.ENQUEUE
+            responseData = UcfResponseData.DELTA
+        }
+    }
 }
 
-fun messageAreaReposition(id: String, top: String, left: String) = EventBuilder("MessageArea_Reposition") {
-    putFirst("Id", id)
-    putFirst("Top", top)
-    putFirst("Left", left)
+object MessageAreaEventBuilders {
+    fun reposition(id: String, top: String, left: String) = EventBuilder("MessageArea", "Reposition") {
+        parameter("Id", id)
+        parameter("Top", top)
+        parameter("Left", left)
 
-    putSecond("ResponseData", "delta")
-    putSecond("EnqueueCardinality", "single")
+        ucfParameter {
+            responseData = UcfResponseData.DELTA
+            enqueueCardinality = UcfCardinality.SINGLE
+        }
+    }
 }
 
-fun comboBoxSelect(id: String, key: String) = EventBuilder("ComboBox_Select") {
-    putFirst("Id", id)
-    putFirst("Key", key)
-    putFirst("ByEnter", "false")
+object ComboBoxEventBuilders {
+    fun select(id: String, key: String) = EventBuilder("ComboBox", "Select") {
+        parameter("Id", id)
+        parameter("Key", key)
+        parameter("ByEnter", "false")
 
-    putSecond("ResponseData", "delta")
-    putSecond("ClientAction", "submit")
+        ucfParameter {
+            responseData = UcfResponseData.DELTA
+            action = UcfAction.SUBMIT
+        }
+    }
 }
 
-fun buttonPress(id: String) = EventBuilder("Button_Press") {
-    putFirst("Id", id)
+object ButtonEventBuilders {
+    fun press(id: String) = EventBuilder("Button", "Press") {
+        parameter("Id", id)
 
-    putSecond("ResponseData", "delta")
-    putSecond("ClientAction", "submit")
+        ucfParameter {
+            responseData = UcfResponseData.DELTA
+            action = UcfAction.SUBMIT
+        }
+    }
 }
 
-fun formRequest(id: String) = EventBuilder("Form_Request") {
-    putFirst("Id", id)
-    putFirst("Async", "false")
-    putFirst("Hash", "")
-    putFirst("DomChanged", "false")
-    putFirst("IsDirty", "false")
+object TabStripEventBuilders {
+    fun select(id: String, itemId: String, itemIndex: Int, firstVisibleItemIndex: Int) =
+        EventBuilder("TabStrip", "TabSelect") {
+            parameter("Id", id)
+            parameter("ItemId", itemId)
+            parameter("ItemIndex", itemIndex.toString())
+            parameter("FirstVisibleItemIndex", firstVisibleItemIndex.toString())
 
-    putSecond("ResponseData", "delta")
+            ucfParameter {
+                responseData = UcfResponseData.DELTA
+                action = UcfAction.SUBMIT
+            }
+        }
 }
 
-fun loadingPlaceHolderLoad() = EventBuilder("LoadingPlaceHolder_Load") {
-    putFirst("Id", "_loadingPlaceholder_")
+object FormEventBuilders {
+    fun request(id: String) = EventBuilder("Form", "Request") {
+        parameter("Id", id)
+        parameter("Async", "false")
+        parameter("Hash", "")
+        parameter("DomChanged", "false")
+        parameter("IsDirty", "false")
 
-    putSecond("ResponseData", "delta")
-    putSecond("ClientAction", "submit")
+        ucfParameter {
+            responseData = UcfResponseData.DELTA
+        }
+    }
+}
+
+object LoadingPlaceHolderEventBuilders {
+    fun load() = EventBuilder("LoadingPlaceHolder", "Load") {
+        parameter("Id", "_loadingPlaceholder_")
+
+        ucfParameter {
+            responseData = UcfResponseData.DELTA
+            action = UcfAction.SUBMIT
+        }
+    }
 }

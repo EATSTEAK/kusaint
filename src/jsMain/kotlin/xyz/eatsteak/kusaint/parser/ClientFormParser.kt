@@ -1,18 +1,15 @@
 package xyz.eatsteak.kusaint.parser
 
-import io.ktor.client.call.*
-import io.ktor.client.statement.*
 import io.ktor.http.*
 import org.w3c.dom.asList
 import org.w3c.dom.parsing.DOMParser
-import xyz.eatsteak.kusaint.eventqueue.model.SapClientData
+import xyz.eatsteak.kusaint.eventqueue.model.SapClient
 import xyz.eatsteak.kusaint.state.State
-import xyz.eatsteak.kusaint.util.decompressBrotli
 
-actual object ClientFormParser: Parser<String, SapClientData> {
+actual object ClientFormParser: Parser<String, SapClient> {
 
-    actual override suspend fun parse(state: State<String>): SapClientData {
-        var keys = mutableMapOf<String, String>()
+    actual override suspend fun parse(state: State<String>): SapClient {
+        val keys = mutableMapOf<String, String>()
         state.mutations.forEach { actionRes ->
             if(actionRes.response.contentType()?.equals(ContentType("text", "html")) == true) {
                 println(actionRes.response.status)
@@ -26,7 +23,7 @@ actual object ClientFormParser: Parser<String, SapClientData> {
                 }
             }
         }
-        return SapClientData(
+        return SapClient(
             action = keys["action"]!!,
             charset = keys["sap-charset"]!!,
             wdSecureId = keys["sap-wd-secure-id"]!!,

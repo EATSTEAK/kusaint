@@ -7,8 +7,8 @@ class EventQueueBuilder(block: EventQueueBuilder.() -> Unit) {
         block.invoke(this)
     }
 
-    fun addEvent(eventName: String, block: EventBuilder.() -> Unit) {
-        val eventBuilder = EventBuilder(eventName, block)
+    fun addEvent(controlName: String, eventName: String, block: EventBuilder.() -> Unit) {
+        val eventBuilder = EventBuilder(controlName, eventName, block)
         addEvent(eventBuilder)
     }
 

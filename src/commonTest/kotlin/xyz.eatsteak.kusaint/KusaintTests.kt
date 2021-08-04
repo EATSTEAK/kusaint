@@ -1,10 +1,10 @@
 package xyz.eatsteak.kusaint
 
-import xyz.eatsteak.kusaint.action.TimeTablePageNavigateAction
 import xyz.eatsteak.kusaint.eventqueue.EventQueueBuilder
+import xyz.eatsteak.kusaint.eventqueue.model.UcfAction
+import xyz.eatsteak.kusaint.eventqueue.model.UcfCardinality
+import xyz.eatsteak.kusaint.eventqueue.model.UcfResponseData
 import xyz.eatsteak.kusaint.eventqueue.toEventQueueString
-import xyz.eatsteak.kusaint.parser.ClientFormParser
-import xyz.eatsteak.kusaint.state.StateBuilders
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
@@ -27,43 +27,51 @@ class KusaintTests {
     fun eventQueueBuildTest() {
         val test = listOf(
             EventQueueBuilder {
-                addEvent("Custom_ClientInfos") {
-                    putFirst("Id", "WD01")
-                    putFirst("WindowOpenerExists", "false")
-                    putFirst("ClientURL", "https://ecc.ssu.ac.kr/sap/bc/webdynpro/sap/zcmw2100?sap-language=KO#")
-                    putFirst("ClientWidth", "1440")
-                    putFirst("ClientHeight", "790")
-                    putFirst("DocumentDomain", "ssu.ac.kr")
-                    putFirst("IsTopWindow", "true")
-                    putFirst("ParentAccessible", "true")
+                addEvent("Custom", "ClientInfos") {
+                    parameter("Id", "WD01")
+                    parameter("WindowOpenerExists", "false")
+                    parameter("ClientURL", "https://ecc.ssu.ac.kr/sap/bc/webdynpro/sap/zcmw2100?sap-language=KO#")
+                    parameter("ClientWidth", "1440")
+                    parameter("ClientHeight", "790")
+                    parameter("DocumentDomain", "ssu.ac.kr")
+                    parameter("IsTopWindow", "true")
+                    parameter("ParentAccessible", "true")
 
-                    putSecond("ClientAction", "enqueue")
-                    putSecond("ResponseData", "delta")
+                    ucfParameter {
+                        action = UcfAction.ENQUEUE
+                        responseData = UcfResponseData.DELTA
+                    }
                 }
-                addEvent("ClientInspector_Notify") {
-                    putFirst("Id", "WD01")
-                    putFirst("Data", "SapThemeID:sap_fiori_3")
+                addEvent("ClientInspector", "Notify") {
+                    parameter("Id", "WD01")
+                    parameter("Data", "SapThemeID:sap_fiori_3")
 
-                    putSecond("ResponseData", "delta")
-                    putSecond("EnqueueCardinality", "single")
+                    ucfParameter {
+                        responseData = UcfResponseData.DELTA
+                        enqueueCardinality = UcfCardinality.SINGLE
+                    }
                 }
-                addEvent("ComboBox_Select") {
-                    putFirst("Id", "WDDD")
-                    putFirst("Key", "092")
-                    putFirst("ByEnter", "false")
+                addEvent("ComboBox", "Select") {
+                    parameter("Id", "WDDD")
+                    parameter("Key", "092")
+                    parameter("ByEnter", "false")
 
-                    putSecond("ResponseData", "delta")
-                    putSecond("ClientAction", "submit")
+                    ucfParameter {
+                        responseData = UcfResponseData.DELTA
+                        action = UcfAction.SUBMIT
+                    }
                 }
-                addEvent("Form_Request") {
-                    putFirst("Id", "sap.client.SsrClient.form")
-                    putFirst("Async", "false")
-                    putFirst("FocusInfo", "@{\"iSelectionStart\":0,\"iSelectionEnd\":0,\"iCursorPos\":0,\"sValue\":\"2 학기\",\"sFocussedId\":\"WDDD\",\"sApplyControlId\":\"WDDD\"}")
-                    putFirst("Hash", "")
-                    putFirst("DomChanged", "false")
-                    putFirst("IsDirty", "false")
+                addEvent("Form", "Request") {
+                    parameter("Id", "sap.client.SsrClient.form")
+                    parameter("Async", "false")
+                    parameter("FocusInfo", "@{\"iSelectionStart\":0,\"iSelectionEnd\":0,\"iCursorPos\":0,\"sValue\":\"2 학기\",\"sFocussedId\":\"WDDD\",\"sApplyControlId\":\"WDDD\"}")
+                    parameter("Hash", "")
+                    parameter("DomChanged", "false")
+                    parameter("IsDirty", "false")
 
-                    putSecond("ResponseData", "delta")
+                    ucfParameter {
+                        responseData = UcfResponseData.DELTA
+                    }
                 }
             }
         )

@@ -3,17 +3,14 @@ package xyz.eatsteak.kusaint.action
 import io.ktor.client.*
 import io.ktor.client.call.*
 import io.ktor.client.request.*
-import io.ktor.client.request.forms.*
 import io.ktor.client.statement.*
-import io.ktor.http.*
 import xyz.eatsteak.kusaint.action.prerequisite.Prerequisite
 import xyz.eatsteak.kusaint.constant.appendEccXhrHeaders
-import xyz.eatsteak.kusaint.eventqueue.EventQueueBuilder
-import xyz.eatsteak.kusaint.eventqueue.model.SapClientData
+import xyz.eatsteak.kusaint.eventqueue.model.SapClient
 import xyz.eatsteak.kusaint.util.decompressBrotli
 import xyz.eatsteak.kusaint.util.updatePage
 
-class SapInitialUpdateAction(private val baseUrl: String, private val sapClient: SapClientData):
+class SapInitialUpdateAction(private val baseUrl: String, private val sapClient: SapClient):
     Action<String> {
     override val prerequisite: Prerequisite = Prerequisite.EMPTY
 
