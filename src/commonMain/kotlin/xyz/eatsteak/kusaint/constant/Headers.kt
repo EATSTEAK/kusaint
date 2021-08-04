@@ -15,3 +15,18 @@ fun HeadersBuilder.appendEccHeaders() {
     append("Sec-GPC", "1")
     append("Upgrade-Insecure-Requests", "1")
 }
+
+fun HeadersBuilder.appendEccXhrHeaders() {
+    append("Accept", "*/*")
+    append("Accept-Encoding", "gzip, deflat, br")
+    append("Accept-Language", "ko-KR,ko;q=0.8,en-US;q=0.5,en;q=0.3")
+    append("Connection", "keep-alive")
+    append("DNT", "1")
+    append("Host", "ecc.ssu.ac.kr")
+    append("Sec-Fetch-Dest", "empty")
+    append("Sec-Fetch-Mode", "cors")
+    append("Sec-Fetch-Site", "same-origin")
+    append("Sec-GPC", "1")
+    append("X-Requested-With", "XMLHttpRequest")
+    append("X-XHR-Logon", "accept")
+}
