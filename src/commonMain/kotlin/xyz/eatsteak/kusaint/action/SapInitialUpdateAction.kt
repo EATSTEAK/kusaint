@@ -13,7 +13,7 @@ import xyz.eatsteak.kusaint.eventqueue.model.SapClientData
 import xyz.eatsteak.kusaint.util.decompressBrotli
 import xyz.eatsteak.kusaint.util.updatePage
 
-class SapEventQueueAction(private val baseUrl: String, private val sapClient: SapClientData, private val eventQueue: EventQueueBuilder):
+class SapInitialUpdateAction(private val baseUrl: String, private val sapClient: SapClientData):
     Action<String> {
     override val prerequisite: Prerequisite = Prerequisite.EMPTY
 
@@ -22,13 +22,6 @@ class SapEventQueueAction(private val baseUrl: String, private val sapClient: Sa
             headers {
                 appendEccXhrHeaders()
             }
-            body = FormDataContent(Parameters.build {
-                append("sap-charset", sapClient.charset)
-                append("sap-wd-secure-id", sapClient.wdSecureId)
-                append("fesrAppName", sapClient.appName)
-                append("fesrUseBeacon", sapClient.useBeacon.toString())
-                append("SAPEVENTQUEUE", eventQueue.build())
-            })
         }
         val decompressed = decompressBrotli(response.receive())
         println("[INFO] Try to Update Page by update requests.")
