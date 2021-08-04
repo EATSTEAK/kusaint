@@ -2,7 +2,7 @@ package xyz.eatsteak.kusaint.parser
 
 import xyz.eatsteak.kusaint.state.State
 
-interface Parser<T> {
+interface Parser<T, R> {
 
-    suspend fun parse(state: State<T>)
+    suspend fun parse(state: State<T>): R
 }
