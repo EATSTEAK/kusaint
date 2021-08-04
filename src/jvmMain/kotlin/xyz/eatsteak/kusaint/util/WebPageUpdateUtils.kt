@@ -8,14 +8,26 @@ actual fun updatePage(original: String, updateResponse: String): String {
     val updateDoc = Jsoup.parse(updateResponse, "", Parser.xmlParser())
     println("[INFO] Getting nodes from Document.")
     val updateData = updateDoc.getElementsByTag("updates").first()?.children()?.first()
-    println(updateData?.tagName())
+    println("[INFO] Executing update strategy ${updateData?.tagName()}")
     when(updateData?.tagName()) {
         "full-update" -> {
             val windowId = updateData.attr("windowId")
             val window = originalDoc.select("[id=\"$windowId\"]").first()
             if(window != null) {
                 println("[INFO] Executing full-update on window $windowId")
-                window.html(updateData.data())
+                updateData.children().forEach {
+                    when(it.tagName()) {
+                        "content-update" -> {
+                            val contentId = it.id()
+                            val target = window.select("[id=\"$contentId\"]").first()
+                            val content = it.getElementsByTag("content").first()
+                            if(target != null && content != null && target.parent() != null) {
+                                println("[INFO] Executing control-update on content $contentId")
+                                target.parent()!!.html(content.html().replace("<![CDATA[", "").replace("]]>", ""))
+                            }
+                        }
+                    }
+                }
             }
         }
         "delta-update" -> {
@@ -29,9 +41,9 @@ actual fun updatePage(original: String, updateResponse: String): String {
                             val controlId = it.id()
                             val target = window.select("[id=\"$controlId\"]").first()
                             val content = it.getElementsByTag("content").first()
-                            if(target != null && content != null) {
+                            if(target != null && content != null && target.parent() != null) {
                                 println("[INFO] Executing control-update on control $controlId")
-                                target.html(content.data())
+                                target.parent()!!.html(content.html().replace("<![CDATA[", "").replace("]]>", ""))
                             }
                         }
                     }
