@@ -10,6 +10,10 @@ import kotlin.test.assertEquals
 
 class KusaintTests {
 
+
+    /*
+    Test Conversion of normal string to the event string.
+     */
     @Test
     fun eventStringConversionTest() {
         val test = listOf(
@@ -23,6 +27,9 @@ class KusaintTests {
         test.forEachIndexed { index, it -> assertEquals(result[index], it.toEventQueueString()) }
     }
 
+    /*
+    Test EventQueueStringBuilder.
+     */
     @Test
     fun eventQueueBuildTest() {
         val test = listOf(
@@ -82,9 +89,11 @@ class KusaintTests {
     }
 
     @Test
-    fun clientFormParseTest() {
+    fun retrieveTimeTableTest() {
         runBlockingTest {
-            Kusaint.getTimeTable()
+            val timeTableData = Kusaint.getTimeTable(2021, "2 학기", "IT대학", "글로벌미디어학부", "글로벌미디어학부", 500)
+            assertEquals(true, timeTableData.isNotEmpty())
+            println(timeTableData)
         }
     }
 
