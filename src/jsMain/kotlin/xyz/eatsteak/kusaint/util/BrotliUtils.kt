@@ -14,5 +14,6 @@ actual fun decompressBrotli(byteArray: ByteArray): ByteArray {
 }
 
 @JsModule("brotli/decompress")
+@JsNonModule
 external fun decompress(buffer: ArrayBuffer): Uint8Array
 
