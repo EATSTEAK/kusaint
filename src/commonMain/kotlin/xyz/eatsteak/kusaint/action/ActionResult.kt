@@ -1,3 +1,6 @@
 package xyz.eatsteak.kusaint.action
 
-class ActionResult<T>(val action: Action<T>, val result: T, val beforeMutations: List<ActionResult<*>>)
+import io.ktor.client.statement.*
+import kotlin.reflect.KClass
+
+class ActionResult<T>(val action: KClass<out Action<T>>, val response: HttpResponse, val result: T, val beforeMutations: List<ActionResult<*>>)

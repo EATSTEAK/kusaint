@@ -7,6 +7,6 @@ interface Action<T> {
 
     val prerequisite: Prerequisite
 
-    suspend fun launch(client: HttpClient, mutations: List<ActionResult<T>>): T
+    suspend fun launch(client: HttpClient, mutations: List<ActionResult<T>>): ActionResult<T>
 
 }
