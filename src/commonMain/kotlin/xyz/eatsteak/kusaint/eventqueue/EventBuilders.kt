@@ -14,9 +14,9 @@ fun customClientInfos(id: String) = EventBuilder("Custom_ClientInfos") {
     putSecond("ResponseData", "delta")
 }
 
-fun clientInspectorNotify(id: String) = EventBuilder("ClientInspector_Notify") {
-    putFirst("Id", "WD01")
-    putFirst("Data", "SapThemeID:sap_fiori_3")
+fun clientInspectorNotify(id: String, data: String) = EventBuilder("ClientInspector_Notify") {
+    putFirst("Id", id)
+    putFirst("Data", data)
 
     putSecond("ResponseData", "delta")
     putSecond("EnqueueCardinality", "single")
@@ -55,4 +55,11 @@ fun formRequest(id: String) = EventBuilder("Form_Request") {
     putFirst("IsDirty", "false")
 
     putSecond("ResponseData", "delta")
+}
+
+fun loadingPlaceHolderLoad() = EventBuilder("LoadingPlaceHolder_Load") {
+    putFirst("Id", "_loadingPlaceholder_")
+
+    putSecond("ResponseData", "delta")
+    putSecond("ClientAction", "submit")
 }
