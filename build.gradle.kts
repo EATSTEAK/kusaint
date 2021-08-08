@@ -24,7 +24,7 @@ kotlin {
     js(LEGACY) {
         nodejs {
             testTask {
-                useMocha()
+                debug = false
             }
         }
         binaries.executable()
@@ -43,7 +43,6 @@ kotlin {
         val commonTest by getting {
             dependencies {
                 implementation(kotlin("test"))
-                implementation("com.javiersc.run-blocking:suspend-test:$runBlockingVersion")
             }
         }
         val jvmMain by getting {
@@ -54,9 +53,13 @@ kotlin {
                 implementation("org.jsoup:jsoup:1.14.1")
             }
         }
-        val jvmTest by getting
+        val jvmTest by getting {
+            dependencies {
+            }
+        }
         val jsMain by getting {
             dependencies {
+                implementation(kotlin("stdlib-js"))
                 implementation("io.ktor:ktor-client-js:$ktorVersion")
                 implementation(npm("brotli", "1.3.2"))
             }
