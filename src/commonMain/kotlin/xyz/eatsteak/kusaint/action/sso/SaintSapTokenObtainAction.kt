@@ -16,7 +16,7 @@ class SaintSapTokenObtainAction(val id: String): Action<String> {
         get() = Prerequisite(PrerequisiteStrategy.CONTAINS, listOf(SsoLoginAction::class))
 
     override suspend fun launch(client: HttpClient, mutations: List<ActionResult<String>>): ActionResult<String> {
-        val sTokenCookie = client.cookies(".ssu.ac.kr")["sToken"]?.value ?: throw IllegalStateException("Cannot find sToken, Is sso login succeed?")
+        val sTokenCookie = client.cookies("https://saint.ssu.ac.kr").find { it.name == "sToken" }?.value ?: throw IllegalStateException("Cannot find sToken, Is sso login succeed?")
         val response = client.get<HttpResponse>("https://saint.ssu.ac.kr/webSSO/sso.jsp") {
             headers {
                 appendSsoHeaders()

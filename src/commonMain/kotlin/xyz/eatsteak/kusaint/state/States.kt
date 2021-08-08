@@ -4,6 +4,7 @@ import io.ktor.client.features.*
 import io.ktor.client.features.compression.*
 import io.ktor.client.features.cookies.*
 import io.ktor.client.request.*
+import io.ktor.http.*
 import xyz.eatsteak.kusaint.action.PageNavigateAction
 import xyz.eatsteak.kusaint.action.sso.SaintSapTokenObtainAction
 import xyz.eatsteak.kusaint.action.sso.SsoLoginAction
@@ -17,9 +18,6 @@ object States {
         BasicState() {
             defaultRequest {
                 headers { appendEccHeaders() }
-            }
-            install(HttpCookies) {
-                storage = AcceptAllCookiesStorage()
             }
             ContentEncoding {
                 gzip()
@@ -35,9 +33,6 @@ object States {
             defaultRequest {
                 headers { appendEccHeaders() }
             }
-            install(HttpCookies) {
-                storage = AcceptAllCookiesStorage()
-            }
             ContentEncoding {
                 gzip()
                 deflate()
@@ -47,6 +42,7 @@ object States {
         }
         state.mutate(PageNavigateAction("https://smartid.ssu.ac.kr"))
         val ssoForm = SsoFormParser.parse(state)
+        state.mutate(SsoLoginAction(ssoForm, id, pass))
         state.mutate(SsoLoginAction(ssoForm, id, pass))
         state.mutate(SaintSapTokenObtainAction(id))
         state
