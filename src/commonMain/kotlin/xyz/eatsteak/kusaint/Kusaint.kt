@@ -5,7 +5,8 @@ import xyz.eatsteak.kusaint.api.TimeTableApi
 import xyz.eatsteak.kusaint.state.State
 import xyz.eatsteak.kusaint.state.States
 
-class Kusaint(id: String?, password: String?) {
+class Kusaint(id: String? = null, password: String? = null) {
+
     private val stateSupplier: suspend () -> State<String> = if(id == null || password == null) States.eccAnonymousState() else States.eccAuthenticatedState(id, password)
 
     val timeTable by lazy {

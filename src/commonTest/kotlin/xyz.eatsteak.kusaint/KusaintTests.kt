@@ -94,7 +94,7 @@ class KusaintTests {
     @Test
     fun retrieveOneMajorTimeTableTest() {
         runBlockingTest {
-            val timeTableData = Kusaint.getTimeTableForMajor(2021, "2 학기", "IT대학", "글로벌미디어학부")
+            val timeTableData = Kusaint().timeTable.major(2021, "2 학기", "IT대학", "글로벌미디어학부")
             assertEquals(true, timeTableData.second.isNotEmpty())
             println(timeTableData)
         }
@@ -103,7 +103,7 @@ class KusaintTests {
     @Test
     fun retrieveAllMajorsTimeTableTest() {
         runBlockingTest {
-            val timeTableData = Kusaint.getTimeTableForAllMajors(2021, "2 학기")
+            val timeTableData = Kusaint().timeTable.majors(2021, "2 학기")
             timeTableData.entries.forEach {
                 assertEquals(true, it.value.isNotEmpty())
             }
@@ -114,7 +114,7 @@ class KusaintTests {
     @Test
     fun ssoLoginTest() {
         runBlockingTest {
-            States.ECC_AUTHENTICATED(MyCredentials.id, MyCredentials.password)
+            States.eccAuthenticatedState(MyCredentials.id, MyCredentials.password)()
         }
     }
 
