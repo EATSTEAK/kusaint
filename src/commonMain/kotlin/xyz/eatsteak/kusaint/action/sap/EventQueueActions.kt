@@ -1,5 +1,6 @@
-package xyz.eatsteak.kusaint.action.eventqueue
+package xyz.eatsteak.kusaint.action.sap
 
+import xyz.eatsteak.kusaint.constant.PageConstant
 import xyz.eatsteak.kusaint.eventqueue.*
 import xyz.eatsteak.kusaint.eventqueue.model.SapClient
 
@@ -19,7 +20,7 @@ class CommonActions(private val sapClient: SapClient) {
 
     // 200 - 200줄
     fun changeLineNumber(key: String) = SapEventQueueAction("https://ecc.ssu.ac.kr", sapClient) {
-        addEvent(ComboBoxEventBuilders.select("WD0159", key))
+        addEvent(ComboBoxEventBuilders.select(PageConstant.Common.COMBOBOX_LINENUMBER, key))
         addEvent(FormEventBuilders.request("sap.client.SsrClient.form"))
     }
 }
@@ -30,7 +31,7 @@ class TimeTableActions(private val sapClient: SapClient) {
     fun selectYear(key: String) = SapEventQueueAction("https://ecc.ssu.ac.kr", sapClient) {
         addEvent(CustomEventBuilders.clientInfos("WD01"))
         addEvent(ClientInspectorEventBuilders.notify("WD01", "SapThemeID:sap_fiori_3"))
-        addEvent(ComboBoxEventBuilders.select("WD89", key))
+        addEvent(ComboBoxEventBuilders.select(PageConstant.TimeTable.COMBOBOX_YEAR, key))
         addEvent(FormEventBuilders.request("sap.client.SsrClient.form"))
     }
 
@@ -38,31 +39,31 @@ class TimeTableActions(private val sapClient: SapClient) {
     fun selectSemester(key: String) = SapEventQueueAction("https://ecc.ssu.ac.kr", sapClient) {
         addEvent(CustomEventBuilders.clientInfos("WD01"))
         addEvent(ClientInspectorEventBuilders.notify("WD01", "SapThemeID:sap_fiori_3"))
-        addEvent(ComboBoxEventBuilders.select("WDDD", key))
+        addEvent(ComboBoxEventBuilders.select(PageConstant.TimeTable.COMBOBOX_SEMESTER, key))
         addEvent(FormEventBuilders.request("sap.client.SsrClient.form"))
     }
 
     // 11000037 - IT 대학
     fun selectCollage(key: String) = SapEventQueueAction("https://ecc.ssu.ac.kr", sapClient) {
-        addEvent(ComboBoxEventBuilders.select("WDFA", key))
+        addEvent(ComboBoxEventBuilders.select(PageConstant.TimeTable.COMBOBOX_COLLAGE, key))
         addEvent(FormEventBuilders.request("sap.client.SsrClient.form"))
     }
 
     // 11000039 - 글로벌미디어학부
     fun selectDepartment(key: String) = SapEventQueueAction("https://ecc.ssu.ac.kr", sapClient) {
-        addEvent(ComboBoxEventBuilders.select("WD0107", key))
+        addEvent(ComboBoxEventBuilders.select(PageConstant.TimeTable.COMBOBOX_DEPARTMENT, key))
         addEvent(FormEventBuilders.request("sap.client.SsrClient.form"))
     }
 
     // 11000080 - 정보통신전자공학부
-    fun search(majorKey: String) = SapEventQueueAction("https://ecc.ssu.ac.kr", sapClient) {
-        addEvent(ComboBoxEventBuilders.select("WD010A", majorKey))
-        addEvent(ButtonEventBuilders.press("WD010D"))
+    fun searchWithMajor(majorKey: String) = SapEventQueueAction("https://ecc.ssu.ac.kr", sapClient) {
+        addEvent(ComboBoxEventBuilders.select(PageConstant.TimeTable.COMBOBOX_MAJOR, majorKey))
+        addEvent(ButtonEventBuilders.press(PageConstant.TimeTable.BUTTON_SEARCH))
         addEvent(FormEventBuilders.request("sap.client.SsrClient.form"))
     }
 
     fun search() = SapEventQueueAction("https://ecc.ssu.ac.kr", sapClient) {
-        addEvent(ButtonEventBuilders.press("WD010D"))
+        addEvent(ButtonEventBuilders.press(PageConstant.TimeTable.BUTTON_SEARCH))
         addEvent(FormEventBuilders.request("sap.client.SsrClient.form"))
     }
 }
