@@ -30,3 +30,18 @@ fun HeadersBuilder.appendEccXhrHeaders() {
     append("X-Requested-With", "XMLHttpRequest")
     append("X-XHR-Logon", "accept")
 }
+
+fun HeadersBuilder.appendSsoHeaders() {
+    append("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8")
+    append("Accept-Encoding", "gzip, deflate, br")
+    append("Accept-Language", "ko-KR,ko;q=0.8,en-US;q=0.5,en;q=0.3")
+    append("Connection", "keep-alive")
+    append("DNT", "1")
+    append("Host", "smartid.ssu.ac.kr")
+    append("Origin", "https://smartid.ssu.ac.kr")
+    append("Sec-Fetch-Dest", "iframe")
+    append("Sec-Fetch-Mode", "navigate")
+    append("Sec-Fetch-Site", "same-origin")
+    append("Sec-Fetch-User", "?1")
+    append("Sec-GPC", "1")
+}
