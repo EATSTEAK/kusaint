@@ -1,4 +1,4 @@
-package xyz.eatsteak.kusaint.action.eventqueue
+package xyz.eatsteak.kusaint.action.sap
 
 import io.ktor.client.*
 import io.ktor.client.call.*
@@ -34,9 +34,9 @@ class SapEventQueueAction(private val baseUrl: String, private val sapClient: Sa
                 append("SAPEVENTQUEUE", eventQueue.build())
             })
         }
-        val decompressed = decompressBrotli(response.receive())
-        println("[INFO] Try to Update Page by update requests.")
-        val updatedDocument: String = updatePage(mutations.last().result, decompressed.decodeToString())
+        val decompressed: String = response.receive()
+        // println("[INFO] Try to Update Page by update requests.")
+        val updatedDocument: String = updatePage(mutations.last().result, decompressed)
         return ActionResult(this::class, response, updatedDocument, mutations)
     }
 }

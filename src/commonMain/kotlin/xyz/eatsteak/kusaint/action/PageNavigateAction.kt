@@ -12,7 +12,7 @@ open class PageNavigateAction(private val url: String): Action<String> {
 
     override suspend fun launch(client: HttpClient, mutations: List<ActionResult<String>>): ActionResult<String> {
         val response = client.get<HttpResponse>(url)
-        val decompressed = decompressBrotli(response.receive())
-        return ActionResult(this::class, response, decompressed.decodeToString(), mutations)
+        val str: String = response.receive()
+        return ActionResult(this::class, response, str, mutations)
     }
 }
