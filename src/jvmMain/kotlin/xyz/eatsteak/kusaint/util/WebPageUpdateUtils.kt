@@ -40,7 +40,7 @@ actual fun updatePage(original: String, updateResponse: String): String {
                         val target = originalDoc.select("[id=\"$controlId\"]").first()
                         val content = it.getElementsByTag("content").first()
                         if (target != null && content != null) {
-                            println("[INFO] Executing control-update on control $controlId")
+                            // println("[INFO] Executing control-update on control $controlId")
                             val replacedWith = content.html().replace("<![CDATA[", "").replace("]]>", "")
                             replaces[controlId] = replacedWith
                             target.replaceWith(Element("REPLACE_TARGET_$controlId"))
