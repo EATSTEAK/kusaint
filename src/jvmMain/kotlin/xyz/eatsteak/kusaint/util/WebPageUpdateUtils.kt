@@ -13,22 +13,21 @@ actual fun updatePage(original: String, updateResponse: String): String {
     val replaces = mutableMapOf<String, String>()
     when (updateData?.tagName()) {
         "full-update" -> {
-            val windowId = updateData.attr("windowId")
-            val window = originalDoc.select("[id=\"$windowId\"]").first()
-            if (window != null) {
-                // println("[INFO] Executing full-update on window $windowId")
-                updateData.children().forEach {
-                    when (it.tagName()) {
-                        "content-update" -> {
-                            val contentId = it.id()
-                            val target = originalDoc.select("[id=\"$contentId\"]").first()
-                            if (target != null) {
-                                // println("[INFO] Executing control-update on content $contentId")
-                                target.html(it.html().replace("<![CDATA[", "").replace("]]>", ""))
-                            }
+            // println("[INFO] Executing full-update on window $windowId")
+            updateData.children().forEach {
+                when (it.tagName()) {
+                    "content-update" -> {
+                        val contentId = it.id()
+                        val target = originalDoc.select("[id=\"$contentId\"]").first()
+                        if (target != null) {
+                            // println("[INFO] Executing control-update on content $contentId")
+                            target.html(it.html().replace("<![CDATA[", "").replace("]]>", ""))
+                        } else {
+                            println("[WARN] content update target is null. target: $target")
                         }
                     }
                 }
+
             }
         }
         "delta-update" -> {

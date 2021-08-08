@@ -52,7 +52,7 @@ object PageConstant {
 
         const val BUTTON_SEARCH_DUAL_LISTING = "WD01DA"
 
-        const val TAB_ID = "WDEA"
+        const val TAB_ID = "WDEB"
         enum class TabItem(val itemId: String, val itemIndex: Int, val firstItemIndex: Int) {
             MAJOR("WDEB", 0, 0),
             REQUIRED_ELECTIVE("WD010E", 1, 0),
