@@ -14,7 +14,7 @@ import xyz.eatsteak.kusaint.parser.SsoFormParser
 
 object States {
 
-    val ECC: () -> State<String> = {
+    fun eccAnonymousState(): suspend () -> State<String> = {
         BasicState() {
             defaultRequest {
                 headers { appendEccHeaders() }
@@ -28,7 +28,7 @@ object States {
         }
     }
 
-    val ECC_AUTHENTICATED: suspend (id: String, password: String) -> State<String> = { id, pass ->
+    fun eccAuthenticatedState(id: String, password: String): suspend () -> State<String> = {
         val state = BasicState() {
             defaultRequest {
                 headers { appendEccHeaders() }
@@ -42,8 +42,8 @@ object States {
         }
         state.mutate(PageNavigateAction("https://smartid.ssu.ac.kr"))
         val ssoForm = SsoFormParser.parse(state)
-        state.mutate(SsoLoginAction(ssoForm, id, pass))
-        state.mutate(SsoLoginAction(ssoForm, id, pass))
+        state.mutate(SsoLoginAction(ssoForm, id, password))
+        state.mutate(SsoLoginAction(ssoForm, id, password))
         state.mutate(SaintSapTokenObtainAction(id))
         state
     }
