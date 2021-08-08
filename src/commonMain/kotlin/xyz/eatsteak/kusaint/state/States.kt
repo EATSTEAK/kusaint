@@ -41,6 +41,7 @@ object States {
             ContentEncoding {
                 gzip()
                 deflate()
+                customEncoder(BrotliEncoder)
             }
             BrowserUserAgent()
         }
