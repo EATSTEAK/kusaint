@@ -1,5 +1,6 @@
 package xyz.eatsteak.kusaint
 
+import xyz.eatsteak.kusaint.constant.LineConstant
 import xyz.eatsteak.kusaint.eventqueue.EventQueueBuilder
 import xyz.eatsteak.kusaint.eventqueue.model.UcfAction
 import xyz.eatsteak.kusaint.eventqueue.model.UcfCardinality
@@ -91,7 +92,7 @@ class KusaintTests {
     @Test
     fun retrieveTimeTableTest() {
         runBlockingTest {
-            val timeTableData = Kusaint.getTimeTable(2021, "2 학기", "IT대학", "글로벌미디어학부", "글로벌미디어학부", 500)
+            val timeTableData = Kusaint.getTimeTable(2021, "2 학기", "IT대학", "글로벌미디어학부", LineConstant.FIVE_HUNDRED)
             assertEquals(true, timeTableData.isNotEmpty())
             println(timeTableData)
         }
