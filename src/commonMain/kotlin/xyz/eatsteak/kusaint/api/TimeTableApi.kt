@@ -1,3 +1,5 @@
+@file:Suppress("unused")
+
 package xyz.eatsteak.kusaint.api
 
 import xyz.eatsteak.kusaint.action.TimeTablePageNavigateAction
@@ -13,9 +15,24 @@ import xyz.eatsteak.kusaint.parser.ComboBoxParser
 import xyz.eatsteak.kusaint.parser.TimeTableParser
 import xyz.eatsteak.kusaint.state.State
 
+/**
+ * Obtain TimeTable data from u-saint.
+ * **Warning: This will not work with authentication! Use anonymous state for now.**
+ * @property stateSupplier state supplier for methods, use [xyz.eatsteak.kusaint.Kusaint] for easy use. If you want more advanced usage, please refer to [xyz.eatsteak.kusaint.state.States].
+ */
 class TimeTableApi(val stateSupplier: suspend () -> State<String>) {
 
     inner class Major {
+
+        /**
+         * Find lectures of selected major.
+         * @param year desired year to find.
+         * @param semester desired semester to find. this value normally one of: ["1 학기", "여름학기", "2 학기", "겨울학기"]
+         * @param collage desired collage name to find.
+         * @param department desired department name to find.
+         * @param major desired major name to find. If only one major is exist for the department. then this value can be null.
+         * @return Collection of [xyz.eatsteak.kusaint.model.LectureData].
+         */
         suspend fun find(
             year: Int,
             semester: String,
@@ -54,6 +71,12 @@ class TimeTableApi(val stateSupplier: suspend () -> State<String>) {
             return TimeTableParser.parse(eccState)
         }
 
+        /**
+         * Find lectures of all majors.
+         * @param year desired year to find.
+         * @param semester desired semester to find. this value normally one of: ["1 학기", "여름학기", "2 학기", "겨울학기"]
+         * @return Map of [xyz.eatsteak.kusaint.model.MajorData] paired with collection of [xyz.eatsteak.kusaint.model.LectureData].
+         */
         suspend fun all(year: Int, semester: String): Map<MajorData, Collection<LectureData>> {
             val eccState: State<String> = stateSupplier().apply {
                 mutate(TimeTablePageNavigateAction)
@@ -84,6 +107,14 @@ class TimeTableApi(val stateSupplier: suspend () -> State<String>) {
     }
 
     inner class RequiredElective {
+
+        /**
+         * Find lectures of required elective category.
+         * @param year desired year to find.
+         * @param semester desired semester to find. this value normally one of: ["1 학기", "여름학기", "2 학기", "겨울학기"]
+         * @param lectureName desired lectureName to find.
+         * @return Collection of [xyz.eatsteak.kusaint.model.LectureData]
+         */
         suspend fun find(year: Int, semester: String, lectureName: String): Collection<LectureData> {
             val eccState: State<String> = stateSupplier().apply {
                 mutate(TimeTablePageNavigateAction)
@@ -101,6 +132,12 @@ class TimeTableApi(val stateSupplier: suspend () -> State<String>) {
             return TimeTableParser.parse(eccState)
         }
 
+        /**
+         * Find all lectures of required elective category.
+         * @param year desired year to find.
+         * @param semester desired semester to find. this value normally one of: ["1 학기", "여름학기", "2 학기", "겨울학기"]
+         * @return Map of LectureName paired with collection of [xyz.eatsteak.kusaint.model.LectureData]
+         */
         suspend fun all(year: Int, semester: String): Map<String, Collection<LectureData>> {
             val eccState: State<String> = stateSupplier().apply {
                 mutate(TimeTablePageNavigateAction)
@@ -119,6 +156,14 @@ class TimeTableApi(val stateSupplier: suspend () -> State<String>) {
     }
 
     inner class OptionalElective {
+
+        /**
+         * Find lectures of optional elective category.
+         * @param year desired year to find.
+         * @param semester desired semester to find. this value normally one of: ["1 학기", "여름학기", "2 학기", "겨울학기"]
+         * @param category desired category to find.
+         * @return Collection of [xyz.eatsteak.kusaint.model.LectureData]
+         */
         suspend fun find(year: Int, semester: String, category: String): Collection<LectureData> {
             val eccState: State<String> = stateSupplier().apply {
                 mutate(TimeTablePageNavigateAction)
@@ -136,6 +181,12 @@ class TimeTableApi(val stateSupplier: suspend () -> State<String>) {
             return TimeTableParser.parse(eccState)
         }
 
+        /**
+         * Find all lectures of optional elective category.
+         * @param year desired year to find.
+         * @param semester desired semester to find. this value normally one of: ["1 학기", "여름학기", "2 학기", "겨울학기"]
+         * @return Map of Category paired with collection of [xyz.eatsteak.kusaint.model.LectureData]
+         */
         suspend fun all(year: Int, semester: String): Map<String, Collection<LectureData>> {
             val eccState: State<String> = stateSupplier().apply {
                 mutate(TimeTablePageNavigateAction)
@@ -155,6 +206,13 @@ class TimeTableApi(val stateSupplier: suspend () -> State<String>) {
 
     inner class Chapel {
 
+        /**
+         * Find chapel lectures.
+         * @param year desired year to find.
+         * @param semester desired semester to find. this value normally one of: ["1 학기", "여름학기", "2 학기", "겨울학기"]
+         * @param lectureName desired lectureName to find.
+         * @return Collection of [xyz.eatsteak.kusaint.model.LectureData]
+         */
         suspend fun find(year: Int, semester: String, lectureName: String): Collection<LectureData> {
             val eccState: State<String> = stateSupplier().apply {
                 mutate(TimeTablePageNavigateAction)
@@ -172,6 +230,12 @@ class TimeTableApi(val stateSupplier: suspend () -> State<String>) {
             return TimeTableParser.parse(eccState)
         }
 
+        /**
+         * Find all chapel lectures.
+         * @param year desired year to find.
+         * @param semester desired semester to find. this value normally one of: ["1 학기", "여름학기", "2 학기", "겨울학기"]
+         * @return Map of LectureName paired with collection of [xyz.eatsteak.kusaint.model.LectureData]
+         */
         suspend fun all(year: Int, semester: String): Map<String, Collection<LectureData>> {
             val eccState: State<String> = stateSupplier().apply {
                 mutate(TimeTablePageNavigateAction)
@@ -191,6 +255,12 @@ class TimeTableApi(val stateSupplier: suspend () -> State<String>) {
 
     inner class Teaching {
 
+        /**
+         * Find teaching(교직) lectures.
+         * @param year desired year to find.
+         * @param semester desired semester to find. this value normally one of: ["1 학기", "여름학기", "2 학기", "겨울학기"]
+         * @return Collection of [xyz.eatsteak.kusaint.model.LectureData]
+         */
         suspend fun find(year: Int, semester: String): Collection<LectureData> {
             val eccState: State<String> = stateSupplier().apply {
                 mutate(TimeTablePageNavigateAction)
@@ -205,6 +275,13 @@ class TimeTableApi(val stateSupplier: suspend () -> State<String>) {
     }
 
     inner class ExtendedCollage {
+
+        /**
+         * Find extended collage(평생교육사) lectures.
+         * @param year desired year to find.
+         * @param semester desired semester to find. this value normally one of: ["1 학기", "여름학기", "2 학기", "겨울학기"]
+         * @return Collection of [xyz.eatsteak.kusaint.model.LectureData]
+         */
         suspend fun find(year: Int, semester: String): Collection<LectureData> {
             val eccState: State<String> = stateSupplier().apply {
                 mutate(TimeTablePageNavigateAction)
@@ -218,6 +295,13 @@ class TimeTableApi(val stateSupplier: suspend () -> State<String>) {
     }
 
     inner class StandardSelection {
+
+        /**
+         * Find standard selection lectures.
+         * @param year desired year to find.
+         * @param semester desired semester to find. this value normally one of: ["1 학기", "여름학기", "2 학기", "겨울학기"]
+         * @return Collection of [xyz.eatsteak.kusaint.model.LectureData]
+         */
         suspend fun find(year: Int, semester: String): Collection<LectureData> {
             val eccState: State<String> = stateSupplier().apply {
                 mutate(TimeTablePageNavigateAction)
@@ -231,6 +315,15 @@ class TimeTableApi(val stateSupplier: suspend () -> State<String>) {
     }
 
     inner class GraduatedSchool {
+
+        /**
+         * Find graduated school's lectures.
+         * @param year desired year to find.
+         * @param semester desired semester to find. this value normally one of: ["1 학기", "여름학기", "2 학기", "겨울학기"]
+         * @param school desired school category to find.
+         * @param department desired department to find.
+         * @return Collection of [xyz.eatsteak.kusaint.model.LectureData]
+         */
         suspend fun find(
             year: Int,
             semester: String,
@@ -259,6 +352,12 @@ class TimeTableApi(val stateSupplier: suspend () -> State<String>) {
             return TimeTableParser.parse(eccState)
         }
 
+        /**
+         * Find all graduated school's lectures.
+         * @param year desired year to find.
+         * @param semester desired semester to find. this value normally one of: ["1 학기", "여름학기", "2 학기", "겨울학기"]
+         * @return Map of [xyz.eatsteak.kusaint.model.GraduatedMajorData] paired with collection of [xyz.eatsteak.kusaint.model.LectureData]
+         */
         suspend fun all(
             year: Int,
             semester: String
@@ -284,6 +383,14 @@ class TimeTableApi(val stateSupplier: suspend () -> State<String>) {
     }
 
     inner class LinkedMajor {
+
+        /**
+         * Find linked major(연계전공) lectures.
+         * @param year desired year to find.
+         * @param semester desired semester to find. this value normally one of: ["1 학기", "여름학기", "2 학기", "겨울학기"]
+         * @param major desired linked major to find.
+         * @return Collection of [xyz.eatsteak.kusaint.model.LectureData]
+         */
         suspend fun find(year: Int, semester: String, major: String): Collection<LectureData> {
             val eccState: State<String> = stateSupplier().apply {
                 mutate(TimeTablePageNavigateAction)
@@ -301,6 +408,12 @@ class TimeTableApi(val stateSupplier: suspend () -> State<String>) {
             return TimeTableParser.parse(eccState)
         }
 
+        /**
+         * Find all linked major(연계전공) lectures.
+         * @param year desired year to find.
+         * @param semester desired semester to find. this value normally one of: ["1 학기", "여름학기", "2 학기", "겨울학기"]
+         * @return Map of LinkedMajorName paired with collection of [xyz.eatsteak.kusaint.model.LectureData]
+         */
         suspend fun all(year: Int, semester: String): Map<String, Collection<LectureData>> {
             val eccState: State<String> = stateSupplier().apply {
                 mutate(TimeTablePageNavigateAction)
@@ -319,6 +432,14 @@ class TimeTableApi(val stateSupplier: suspend () -> State<String>) {
     }
 
     inner class CombinedMajor {
+
+        /**
+         * Find combined major(융합전공) lectures.
+         * @param year desired year to find.
+         * @param semester desired semester to find. this value normally one of: ["1 학기", "여름학기", "2 학기", "겨울학기"]
+         * @param major desired combined major to find.
+         * @return Collection of [xyz.eatsteak.kusaint.model.LectureData]
+         */
         suspend fun find(year: Int, semester: String, major: String): Collection<LectureData> {
             val eccState: State<String> = stateSupplier().apply {
                 mutate(TimeTablePageNavigateAction)
@@ -336,6 +457,12 @@ class TimeTableApi(val stateSupplier: suspend () -> State<String>) {
             return TimeTableParser.parse(eccState)
         }
 
+        /**
+         * Find all combined major(융합전공) lectures.
+         * @param year desired year to find.
+         * @param semester desired semester to find. this value normally one of: ["1 학기", "여름학기", "2 학기", "겨울학기"]
+         * @return Map of CombinedMajorName paired with collection of [xyz.eatsteak.kusaint.model.LectureData]
+         */
         suspend fun all(year: Int, semester: String): Map<String, Collection<LectureData>> {
             val eccState: State<String> = stateSupplier().apply {
                 mutate(TimeTablePageNavigateAction)
@@ -354,6 +481,14 @@ class TimeTableApi(val stateSupplier: suspend () -> State<String>) {
     }
 
     inner class FindByProfessorName {
+
+        /**
+         * Find lectures by professor's name.
+         * @param year desired year to find.
+         * @param semester desired semester to find. this value normally one of: ["1 학기", "여름학기", "2 학기", "겨울학기"]
+         * @param professorName desired professor name to find.
+         * @return Collection of [xyz.eatsteak.kusaint.model.LectureData]
+         */
         suspend fun find(year: Int, semester: String, professorName: String): Collection<LectureData> {
             val eccState: State<String> = stateSupplier().apply {
                 mutate(TimeTablePageNavigateAction)
@@ -367,6 +502,14 @@ class TimeTableApi(val stateSupplier: suspend () -> State<String>) {
     }
 
     inner class FindByLecture {
+
+        /**
+         * Find lectures by lecture name.
+         * @param year desired year to find.
+         * @param semester desired semester to find. this value normally one of: ["1 학기", "여름학기", "2 학기", "겨울학기"]
+         * @param lecture desired lecture name to find.
+         * @return Collection of [xyz.eatsteak.kusaint.model.LectureData]
+         */
         suspend fun find(year: Int, semester: String, lecture: String): Collection<LectureData> {
             val eccState: State<String> = stateSupplier().apply {
                 mutate(TimeTablePageNavigateAction)
@@ -380,6 +523,16 @@ class TimeTableApi(val stateSupplier: suspend () -> State<String>) {
     }
 
     inner class RecognizedOtherMajor {
+
+        /**
+         * Find recognized lectures of selected major.
+         * @param year desired year to find.
+         * @param semester desired semester to find. this value normally one of: ["1 학기", "여름학기", "2 학기", "겨울학기"]
+         * @param collage desired collage name to find.
+         * @param department desired department name to find.
+         * @param major desired major name to find. If only one major is exist for the department. then this value can be null.
+         * @return Collection of [xyz.eatsteak.kusaint.model.LectureData].
+         */
         suspend fun find(
             year: Int,
             semester: String,
@@ -419,6 +572,12 @@ class TimeTableApi(val stateSupplier: suspend () -> State<String>) {
             return TimeTableParser.parse(eccState)
         }
 
+        /**
+         * Find recognized lectures of all majors.
+         * @param year desired year to find.
+         * @param semester desired semester to find. this value normally one of: ["1 학기", "여름학기", "2 학기", "겨울학기"]
+         * @return Map of [xyz.eatsteak.kusaint.model.MajorData] paired with collection of [xyz.eatsteak.kusaint.model.LectureData].
+         */
         suspend fun all(year: Int, semester: String): Map<MajorData, Collection<LectureData>> {
             val eccState: State<String> = stateSupplier().apply {
                 mutate(TimeTablePageNavigateAction)
@@ -450,6 +609,13 @@ class TimeTableApi(val stateSupplier: suspend () -> State<String>) {
     }
 
     inner class DualListing {
+
+        /**
+         * Find dual listing lectures.
+         * @param year desired year to find.
+         * @param semester desired semester to find. this value normally one of: ["1 학기", "여름학기", "2 학기", "겨울학기"]
+         * @return Collection of [xyz.eatsteak.kusaint.model.LectureData]
+         */
         suspend fun find(year: Int, semester: String): Collection<LectureData> {
             val eccState: State<String> = stateSupplier().apply {
                 mutate(TimeTablePageNavigateAction)
