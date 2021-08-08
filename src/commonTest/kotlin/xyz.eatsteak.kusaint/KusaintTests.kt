@@ -92,11 +92,22 @@ class KusaintTests {
     }
 
     @Test
-    fun retrieveTimeTableTest() {
+    fun retrieveOneMajorTimeTableTest() {
         runBlockingTest {
-            val timeTableData = Kusaint.getTimeTable(2021, "2 학기", "IT대학", "글로벌미디어학부", LineConstant.FIVE_HUNDRED)
-            assertEquals(true, timeTableData.isNotEmpty())
+            val timeTableData = Kusaint.getTimeTableForMajor(2021, "2 학기", "IT대학", "글로벌미디어학부")
+            assertEquals(true, timeTableData.second.isNotEmpty())
             println(timeTableData)
+        }
+    }
+
+    @Test
+    fun retrieveAllMajorsTimeTableTest() {
+        runBlockingTest {
+            val timeTableData = Kusaint.getTimeTableForAllMajors(2021, "2 학기")
+            timeTableData.entries.forEach {
+                assertEquals(true, it.value.isNotEmpty())
+            }
+            println(timeTableData.keys)
         }
     }
 

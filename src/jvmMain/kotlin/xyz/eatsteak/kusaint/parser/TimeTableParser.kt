@@ -1,7 +1,6 @@
 package xyz.eatsteak.kusaint.parser
 
 import org.jsoup.Jsoup
-import org.jsoup.nodes.Element
 import xyz.eatsteak.kusaint.model.LectureData
 import xyz.eatsteak.kusaint.state.State
 
