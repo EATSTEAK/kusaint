@@ -12,14 +12,21 @@ import xyz.eatsteak.kusaint.action.prerequisite.Prerequisite
 import xyz.eatsteak.kusaint.constant.appendEccXhrHeaders
 import xyz.eatsteak.kusaint.eventqueue.EventQueueBuilder
 import xyz.eatsteak.kusaint.eventqueue.model.SapClient
-import xyz.eatsteak.kusaint.util.decompressBrotli
 import xyz.eatsteak.kusaint.util.updatePage
 
-class SapEventQueueAction(private val baseUrl: String, private val sapClient: SapClient, private val eventQueue: EventQueueBuilder):
+class SapEventQueueAction(
+    private val baseUrl: String,
+    private val sapClient: SapClient,
+    private val eventQueue: EventQueueBuilder
+) :
     Action<String> {
     override val prerequisite: Prerequisite = Prerequisite.EMPTY
 
-    constructor(baseUrl: String, sapClient: SapClient, block: EventQueueBuilder.() -> Unit): this(baseUrl, sapClient, EventQueueBuilder(block))
+    constructor(baseUrl: String, sapClient: SapClient, block: EventQueueBuilder.() -> Unit) : this(
+        baseUrl,
+        sapClient,
+        EventQueueBuilder(block)
+    )
 
     override suspend fun launch(client: HttpClient, mutations: List<ActionResult<String>>): ActionResult<String> {
         val response = client.post<HttpResponse>(baseUrl + sapClient.action) {

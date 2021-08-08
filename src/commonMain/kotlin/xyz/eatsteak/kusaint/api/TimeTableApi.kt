@@ -11,7 +11,6 @@ import xyz.eatsteak.kusaint.parser.ClientFormParser
 import xyz.eatsteak.kusaint.parser.ComboBoxParser
 import xyz.eatsteak.kusaint.parser.TimeTableParser
 import xyz.eatsteak.kusaint.state.State
-import xyz.eatsteak.kusaint.state.States
 
 class TimeTableApi(val stateSupplier: suspend () -> State<String>) {
 

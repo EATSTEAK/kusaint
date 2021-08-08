@@ -5,9 +5,8 @@ import io.ktor.client.call.*
 import io.ktor.client.request.*
 import io.ktor.client.statement.*
 import xyz.eatsteak.kusaint.action.prerequisite.Prerequisite
-import xyz.eatsteak.kusaint.util.decompressBrotli
 
-open class PageNavigateAction(private val url: String): Action<String> {
+open class PageNavigateAction(private val url: String) : Action<String> {
     override val prerequisite: Prerequisite = Prerequisite.EMPTY
 
     override suspend fun launch(client: HttpClient, mutations: List<ActionResult<String>>): ActionResult<String> {

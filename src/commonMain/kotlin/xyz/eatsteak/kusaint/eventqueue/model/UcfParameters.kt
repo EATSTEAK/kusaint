@@ -13,7 +13,7 @@ data class UcfParameters(
     var delay: UcfDelay? = null
 ) {
 
-    constructor(block: UcfParameters.() -> Unit): this() {
+    constructor(block: UcfParameters.() -> Unit) : this() {
         block.invoke(this)
     }
 

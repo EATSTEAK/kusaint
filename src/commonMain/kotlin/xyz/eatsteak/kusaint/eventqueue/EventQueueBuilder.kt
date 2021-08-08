@@ -3,6 +3,7 @@ package xyz.eatsteak.kusaint.eventqueue
 class EventQueueBuilder(block: EventQueueBuilder.() -> Unit) {
 
     private val builder = StringBuilder()
+
     init {
         block.invoke(this)
     }
@@ -13,7 +14,7 @@ class EventQueueBuilder(block: EventQueueBuilder.() -> Unit) {
     }
 
     fun addEvent(event: EventBuilder) {
-        if(builder.isNotEmpty()) builder.append(EVENT_SPECTATOR)
+        if (builder.isNotEmpty()) builder.append(EVENT_SPECTATOR)
         builder.append(event.build())
     }
 

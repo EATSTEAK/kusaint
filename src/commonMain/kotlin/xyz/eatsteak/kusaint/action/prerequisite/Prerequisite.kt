@@ -13,25 +13,25 @@ data class Prerequisite(
     }
 
     fun isMatched(mutations: List<ActionResult<*>>): Boolean {
-        when(prerequisiteStrategy) {
+        when (prerequisiteStrategy) {
             PrerequisiteStrategy.LAST -> {
-                if(mutations.size - actions.size < 0) return false
+                if (mutations.size - actions.size < 0) return false
                 actions.forEachIndexed { index, action ->
-                    if(mutations[mutations.size - actions.size + index].action::class.simpleName !=  action.simpleName) return false
+                    if (mutations[mutations.size - actions.size + index].action::class.simpleName != action.simpleName) return false
                 }
                 return true
             }
             PrerequisiteStrategy.FIRST -> {
-                if(mutations.size < actions.size) return false
+                if (mutations.size < actions.size) return false
                 actions.forEachIndexed { index, action ->
-                    if(mutations[index].action::class.simpleName !=  action.simpleName) return false
+                    if (mutations[index].action::class.simpleName != action.simpleName) return false
                 }
                 return true
             }
             PrerequisiteStrategy.EXACT -> {
-                if(mutations.size != actions.size) return false
+                if (mutations.size != actions.size) return false
                 actions.forEachIndexed { index, action ->
-                    if(mutations[index].action::class.simpleName !=  action.simpleName) return false
+                    if (mutations[index].action::class.simpleName != action.simpleName) return false
                 }
                 return true
             }

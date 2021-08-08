@@ -2,9 +2,7 @@ package xyz.eatsteak.kusaint.state
 
 import io.ktor.client.features.*
 import io.ktor.client.features.compression.*
-import io.ktor.client.features.cookies.*
 import io.ktor.client.request.*
-import io.ktor.http.*
 import xyz.eatsteak.kusaint.action.PageNavigateAction
 import xyz.eatsteak.kusaint.action.sso.SaintSapTokenObtainAction
 import xyz.eatsteak.kusaint.action.sso.SsoLoginAction
@@ -15,7 +13,7 @@ import xyz.eatsteak.kusaint.parser.SsoFormParser
 object States {
 
     fun eccAnonymousState(): suspend () -> State<String> = {
-        BasicState() {
+        BasicState {
             defaultRequest {
                 headers { appendEccHeaders() }
             }
@@ -29,7 +27,7 @@ object States {
     }
 
     fun eccAuthenticatedState(id: String, password: String): suspend () -> State<String> = {
-        val state = BasicState() {
+        val state = BasicState {
             defaultRequest {
                 headers { appendEccHeaders() }
             }

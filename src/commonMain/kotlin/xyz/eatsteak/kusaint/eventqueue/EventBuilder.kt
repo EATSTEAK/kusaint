@@ -13,7 +13,10 @@ class EventBuilder(private val controlName: String, private val eventName: Strin
     }
 
     fun parameter(key: String, value: String) = params.put(key, value)
-    fun ucfParameter(ucfParams: UcfParameters) { this.ucfParams = ucfParams }
+    fun ucfParameter(ucfParams: UcfParameters) {
+        this.ucfParams = ucfParams
+    }
+
     fun ucfParameter(block: UcfParameters.() -> Unit) = block.invoke(ucfParams)
     fun customParameter(key: String, value: String) = customParams.put(key, value)
 
