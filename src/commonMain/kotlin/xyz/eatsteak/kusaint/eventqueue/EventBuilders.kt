@@ -2,6 +2,7 @@ package xyz.eatsteak.kusaint.eventqueue
 
 import xyz.eatsteak.kusaint.eventqueue.model.UcfAction
 import xyz.eatsteak.kusaint.eventqueue.model.UcfCardinality
+import xyz.eatsteak.kusaint.eventqueue.model.UcfDelay
 import xyz.eatsteak.kusaint.eventqueue.model.UcfResponseData
 
 
@@ -59,6 +60,17 @@ object ComboBoxEventBuilders {
         ucfParameter {
             responseData = UcfResponseData.DELTA
             action = UcfAction.SUBMIT
+        }
+    }
+
+    fun change(id: String, value: String) = EventBuilder("ComboBox", "Change") {
+        parameter("Id", id)
+        parameter("Value", value)
+
+        ucfParameter {
+            responseData = UcfResponseData.DELTA
+            enqueueCardinality = UcfCardinality.SINGLE
+            delay = UcfDelay.FULL
         }
     }
 }
