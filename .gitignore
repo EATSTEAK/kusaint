@@ -5,3 +5,4 @@
 /build/classes/kotlin/jvm/test/
 /build/js/packages/kusaint/kotlin/
 /build/js/packages/kusaint-test/kotlin/
+/src/commonTest/kotlin/xyz.eatsteak.kusaint/credentials/
