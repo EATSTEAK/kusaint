@@ -27,7 +27,7 @@ class TimeTableApi(val stateSupplier: suspend () -> State<String>) {
         /**
          * Find lectures of selected major.
          * @param year desired year to find.
-         * @param semester desired semester to find. this value normally one of: ["1 학기", "여름학기", "2 학기", "겨울학기"]
+         * @param semester desired semester to find. this value is normally one of: ["1 학기", "여름학기", "2 학기", "겨울학기"]
          * @param collage desired collage name to find.
          * @param department desired department name to find.
          * @param major desired major name to find. If only one major is exist for the department. then this value can be null.
@@ -74,7 +74,7 @@ class TimeTableApi(val stateSupplier: suspend () -> State<String>) {
         /**
          * Find lectures of all majors.
          * @param year desired year to find.
-         * @param semester desired semester to find. this value normally one of: ["1 학기", "여름학기", "2 학기", "겨울학기"]
+         * @param semester desired semester to find. this value is normally one of: ["1 학기", "여름학기", "2 학기", "겨울학기"]
          * @return Map of [xyz.eatsteak.kusaint.model.MajorData] paired with collection of [xyz.eatsteak.kusaint.model.LectureData].
          */
         suspend fun all(year: Int, semester: String): Map<MajorData, Collection<LectureData>> {
@@ -104,6 +104,67 @@ class TimeTableApi(val stateSupplier: suspend () -> State<String>) {
             }
             return ret
         }
+
+        /**
+         * Gets a list of available collages.
+         * @return Collection of collage names in String.
+         */
+        suspend fun getCollages(): Collection<String> {
+            val eccState: State<String> = stateSupplier().apply {
+                mutate(TimeTablePageNavigateAction)
+            }
+            val sapClient = ClientFormParser.parse(eccState)
+            eccState.mutate(sapClient.TimeTableActions.Common().initialLoad())
+            return ComboBoxParser(PageConstant.TimeTable.COMBOBOX_COLLAGE).parse(eccState).keys
+        }
+
+        /**
+         * Gets a list of available departments of given collage.
+         * @param collage desired collage name.
+         * @return Collection of department names in String.
+         */
+        suspend fun getDepartments(collage: String): Collection<String> {
+            val eccState: State<String> = stateSupplier().apply {
+                mutate(TimeTablePageNavigateAction)
+            }
+            val sapClient = ClientFormParser.parse(eccState)
+            eccState.mutate(sapClient.TimeTableActions.Common().initialLoad())
+            val collages = ComboBoxParser(PageConstant.TimeTable.COMBOBOX_COLLAGE).parse(eccState)
+            eccState.mutate(
+                sapClient.TimeTableActions.Major().selectCollage(
+                    collages[collage] ?: throw IllegalArgumentException("Cannot find collage. possible values: $collages")
+                )
+            )
+            return ComboBoxParser(PageConstant.TimeTable.COMBOBOX_DEPARTMENT).parse(eccState).keys
+        }
+
+        /**
+         * Gets a list of available majors of given collage and department.
+         * @param collage desired collage name.
+         * @param department desired department name.
+         * @return Collection of major names in String.
+         */
+        suspend fun getMajors(collage: String, department: String): Collection<String> {
+            val eccState: State<String> = stateSupplier().apply {
+                mutate(TimeTablePageNavigateAction)
+            }
+            val sapClient = ClientFormParser.parse(eccState)
+            eccState.mutate(sapClient.TimeTableActions.Common().initialLoad())
+            val collages = ComboBoxParser(PageConstant.TimeTable.COMBOBOX_COLLAGE).parse(eccState)
+            eccState.mutate(
+                sapClient.TimeTableActions.Major().selectCollage(
+                    collages[collage] ?: throw IllegalArgumentException("Cannot find collage. possible values: $collages")
+                )
+            )
+            val departments = ComboBoxParser(PageConstant.TimeTable.COMBOBOX_DEPARTMENT).parse(eccState)
+            eccState.mutate(
+                sapClient.TimeTableActions.Major().selectDepartment(
+                    departments[department]
+                        ?: throw IllegalArgumentException("Cannot find department. possible values: $departments")
+                )
+            )
+            return ComboBoxParser(PageConstant.TimeTable.COMBOBOX_MAJOR).parse(eccState).keys
+        }
     }
 
     inner class RequiredElective {
@@ -111,7 +172,7 @@ class TimeTableApi(val stateSupplier: suspend () -> State<String>) {
         /**
          * Find lectures of required elective category.
          * @param year desired year to find.
-         * @param semester desired semester to find. this value normally one of: ["1 학기", "여름학기", "2 학기", "겨울학기"]
+         * @param semester desired semester to find. this value is normally one of: ["1 학기", "여름학기", "2 학기", "겨울학기"]
          * @param lectureName desired lectureName to find.
          * @return Collection of [xyz.eatsteak.kusaint.model.LectureData]
          */
@@ -135,7 +196,7 @@ class TimeTableApi(val stateSupplier: suspend () -> State<String>) {
         /**
          * Find all lectures of required elective category.
          * @param year desired year to find.
-         * @param semester desired semester to find. this value normally one of: ["1 학기", "여름학기", "2 학기", "겨울학기"]
+         * @param semester desired semester to find. this value is normally one of: ["1 학기", "여름학기", "2 학기", "겨울학기"]
          * @return Map of LectureName paired with collection of [xyz.eatsteak.kusaint.model.LectureData]
          */
         suspend fun all(year: Int, semester: String): Map<String, Collection<LectureData>> {
@@ -153,6 +214,21 @@ class TimeTableApi(val stateSupplier: suspend () -> State<String>) {
             }
             return ret
         }
+
+        /**
+         * Gets a list of available lecture names in required electives.
+         * @return Collection of lecture names in String.
+         */
+        suspend fun getLectureName(): Collection<String> {
+            val eccState: State<String> = stateSupplier().apply {
+                mutate(TimeTablePageNavigateAction)
+            }
+            val sapClient = ClientFormParser.parse(eccState)
+            eccState.mutate(sapClient.TimeTableActions.Common().initialLoad())
+            eccState.mutate(sapClient.TimeTableActions.Common().selectTab(PageConstant.TimeTable.TabItem.REQUIRED_ELECTIVE))
+            return ComboBoxParser(PageConstant.TimeTable.COMBOBOX_REQUIRED_ELECTIVE).parse(eccState).keys
+        }
+
     }
 
     inner class OptionalElective {
@@ -160,7 +236,7 @@ class TimeTableApi(val stateSupplier: suspend () -> State<String>) {
         /**
          * Find lectures of optional elective category.
          * @param year desired year to find.
-         * @param semester desired semester to find. this value normally one of: ["1 학기", "여름학기", "2 학기", "겨울학기"]
+         * @param semester desired semester to find. this value is normally one of: ["1 학기", "여름학기", "2 학기", "겨울학기"]
          * @param category desired category to find.
          * @return Collection of [xyz.eatsteak.kusaint.model.LectureData]
          */
@@ -184,7 +260,7 @@ class TimeTableApi(val stateSupplier: suspend () -> State<String>) {
         /**
          * Find all lectures of optional elective category.
          * @param year desired year to find.
-         * @param semester desired semester to find. this value normally one of: ["1 학기", "여름학기", "2 학기", "겨울학기"]
+         * @param semester desired semester to find. this value is normally one of: ["1 학기", "여름학기", "2 학기", "겨울학기"]
          * @return Map of Category paired with collection of [xyz.eatsteak.kusaint.model.LectureData]
          */
         suspend fun all(year: Int, semester: String): Map<String, Collection<LectureData>> {
@@ -202,6 +278,20 @@ class TimeTableApi(val stateSupplier: suspend () -> State<String>) {
             }
             return ret
         }
+
+        /**
+         * Gets a list of available categories in optional electives.
+         * @return Collection of categories in String.
+         */
+        suspend fun getCategories(): Collection<String> {
+            val eccState: State<String> = stateSupplier().apply {
+                mutate(TimeTablePageNavigateAction)
+            }
+            val sapClient = ClientFormParser.parse(eccState)
+            eccState.mutate(sapClient.TimeTableActions.Common().initialLoad())
+            eccState.mutate(sapClient.TimeTableActions.Common().selectTab(PageConstant.TimeTable.TabItem.OPTIONAL_ELECTIVE))
+            return ComboBoxParser(PageConstant.TimeTable.COMBOBOX_OPTIONAL_ELECTIVE).parse(eccState).keys
+        }
     }
 
     inner class Chapel {
@@ -209,7 +299,7 @@ class TimeTableApi(val stateSupplier: suspend () -> State<String>) {
         /**
          * Find chapel lectures.
          * @param year desired year to find.
-         * @param semester desired semester to find. this value normally one of: ["1 학기", "여름학기", "2 학기", "겨울학기"]
+         * @param semester desired semester to find. this value is normally one of: ["1 학기", "여름학기", "2 학기", "겨울학기"]
          * @param lectureName desired lectureName to find.
          * @return Collection of [xyz.eatsteak.kusaint.model.LectureData]
          */
@@ -233,7 +323,7 @@ class TimeTableApi(val stateSupplier: suspend () -> State<String>) {
         /**
          * Find all chapel lectures.
          * @param year desired year to find.
-         * @param semester desired semester to find. this value normally one of: ["1 학기", "여름학기", "2 학기", "겨울학기"]
+         * @param semester desired semester to find. this value is normally one of: ["1 학기", "여름학기", "2 학기", "겨울학기"]
          * @return Map of LectureName paired with collection of [xyz.eatsteak.kusaint.model.LectureData]
          */
         suspend fun all(year: Int, semester: String): Map<String, Collection<LectureData>> {
@@ -251,6 +341,20 @@ class TimeTableApi(val stateSupplier: suspend () -> State<String>) {
             }
             return ret
         }
+
+        /**
+         * Gets a list of available lecture names in chapels.
+         * @return Collection of lecture names in String.
+         */
+        suspend fun getLectureNames(): Collection<String> {
+            val eccState: State<String> = stateSupplier().apply {
+                mutate(TimeTablePageNavigateAction)
+            }
+            val sapClient = ClientFormParser.parse(eccState)
+            eccState.mutate(sapClient.TimeTableActions.Common().initialLoad())
+            eccState.mutate(sapClient.TimeTableActions.Common().selectTab(PageConstant.TimeTable.TabItem.CHAPEL))
+            return ComboBoxParser(PageConstant.TimeTable.COMBOBOX_CHAPEL).parse(eccState).keys
+        }
     }
 
     inner class Teaching {
@@ -258,7 +362,7 @@ class TimeTableApi(val stateSupplier: suspend () -> State<String>) {
         /**
          * Find teaching(교직) lectures.
          * @param year desired year to find.
-         * @param semester desired semester to find. this value normally one of: ["1 학기", "여름학기", "2 학기", "겨울학기"]
+         * @param semester desired semester to find. this value is normally one of: ["1 학기", "여름학기", "2 학기", "겨울학기"]
          * @return Collection of [xyz.eatsteak.kusaint.model.LectureData]
          */
         suspend fun find(year: Int, semester: String): Collection<LectureData> {
@@ -279,7 +383,7 @@ class TimeTableApi(val stateSupplier: suspend () -> State<String>) {
         /**
          * Find extended collage(평생교육사) lectures.
          * @param year desired year to find.
-         * @param semester desired semester to find. this value normally one of: ["1 학기", "여름학기", "2 학기", "겨울학기"]
+         * @param semester desired semester to find. this value is normally one of: ["1 학기", "여름학기", "2 학기", "겨울학기"]
          * @return Collection of [xyz.eatsteak.kusaint.model.LectureData]
          */
         suspend fun find(year: Int, semester: String): Collection<LectureData> {
@@ -299,7 +403,7 @@ class TimeTableApi(val stateSupplier: suspend () -> State<String>) {
         /**
          * Find standard selection lectures.
          * @param year desired year to find.
-         * @param semester desired semester to find. this value normally one of: ["1 학기", "여름학기", "2 학기", "겨울학기"]
+         * @param semester desired semester to find. this value is normally one of: ["1 학기", "여름학기", "2 학기", "겨울학기"]
          * @return Collection of [xyz.eatsteak.kusaint.model.LectureData]
          */
         suspend fun find(year: Int, semester: String): Collection<LectureData> {
@@ -319,7 +423,7 @@ class TimeTableApi(val stateSupplier: suspend () -> State<String>) {
         /**
          * Find graduated school's lectures.
          * @param year desired year to find.
-         * @param semester desired semester to find. this value normally one of: ["1 학기", "여름학기", "2 학기", "겨울학기"]
+         * @param semester desired semester to find. this value is normally one of: ["1 학기", "여름학기", "2 학기", "겨울학기"]
          * @param school desired school category to find.
          * @param department desired department to find.
          * @return Collection of [xyz.eatsteak.kusaint.model.LectureData]
@@ -355,7 +459,7 @@ class TimeTableApi(val stateSupplier: suspend () -> State<String>) {
         /**
          * Find all graduated school's lectures.
          * @param year desired year to find.
-         * @param semester desired semester to find. this value normally one of: ["1 학기", "여름학기", "2 학기", "겨울학기"]
+         * @param semester desired semester to find. this value is normally one of: ["1 학기", "여름학기", "2 학기", "겨울학기"]
          * @return Map of [xyz.eatsteak.kusaint.model.GraduatedMajorData] paired with collection of [xyz.eatsteak.kusaint.model.LectureData]
          */
         suspend fun all(
@@ -380,6 +484,40 @@ class TimeTableApi(val stateSupplier: suspend () -> State<String>) {
             }
             return ret
         }
+
+        /**
+         * Gets a list of graduated schools.
+         * @return Collection of graduated school names in String.
+         */
+        suspend fun getGraduatedSchools(): Collection<String> {
+            val eccState: State<String> = stateSupplier().apply {
+                mutate(TimeTablePageNavigateAction)
+            }
+            val sapClient = ClientFormParser.parse(eccState)
+            eccState.mutate(sapClient.TimeTableActions.Common().initialLoad())
+            eccState.mutate(sapClient.TimeTableActions.Common().selectTab(PageConstant.TimeTable.TabItem.GRADUATED_SCHOOL))
+            return ComboBoxParser(PageConstant.TimeTable.COMBOBOX_GRADUATED_SCHOOL).parse(eccState).keys
+        }
+
+        /**
+         * Gets a list of departments in given graduated school.
+         * @return Collection of departments in String.
+         */
+        suspend fun getDepartments(school: String): Collection<String> {
+            val eccState: State<String> = stateSupplier().apply {
+                mutate(TimeTablePageNavigateAction)
+            }
+            val sapClient = ClientFormParser.parse(eccState)
+            eccState.mutate(sapClient.TimeTableActions.Common().initialLoad())
+            eccState.mutate(sapClient.TimeTableActions.Common().selectTab(PageConstant.TimeTable.TabItem.GRADUATED_SCHOOL))
+            val schools = ComboBoxParser(PageConstant.TimeTable.COMBOBOX_GRADUATED_SCHOOL).parse(eccState)
+            eccState.mutate(
+                sapClient.TimeTableActions.GraduatedSchool().selectGraduatedSchool(
+                    schools[school] ?: throw IllegalArgumentException("Cannot find school. possible values: $schools")
+                )
+            )
+            return ComboBoxParser(PageConstant.TimeTable.COMBOBOX_DEPARTMENT_GRADUATED_SCHOOL).parse(eccState).keys
+        }
     }
 
     inner class LinkedMajor {
@@ -387,7 +525,7 @@ class TimeTableApi(val stateSupplier: suspend () -> State<String>) {
         /**
          * Find linked major(연계전공) lectures.
          * @param year desired year to find.
-         * @param semester desired semester to find. this value normally one of: ["1 학기", "여름학기", "2 학기", "겨울학기"]
+         * @param semester desired semester to find. this value is normally one of: ["1 학기", "여름학기", "2 학기", "겨울학기"]
          * @param major desired linked major to find.
          * @return Collection of [xyz.eatsteak.kusaint.model.LectureData]
          */
@@ -411,7 +549,7 @@ class TimeTableApi(val stateSupplier: suspend () -> State<String>) {
         /**
          * Find all linked major(연계전공) lectures.
          * @param year desired year to find.
-         * @param semester desired semester to find. this value normally one of: ["1 학기", "여름학기", "2 학기", "겨울학기"]
+         * @param semester desired semester to find. this value is normally one of: ["1 학기", "여름학기", "2 학기", "겨울학기"]
          * @return Map of LinkedMajorName paired with collection of [xyz.eatsteak.kusaint.model.LectureData]
          */
         suspend fun all(year: Int, semester: String): Map<String, Collection<LectureData>> {
@@ -429,6 +567,20 @@ class TimeTableApi(val stateSupplier: suspend () -> State<String>) {
             }
             return ret
         }
+
+        /**
+         * Gets a list of available linked majors.
+         * @return Collection of major names in String.
+         */
+        suspend fun getLinkedMajor(): Collection<String> {
+            val eccState: State<String> = stateSupplier().apply {
+                mutate(TimeTablePageNavigateAction)
+            }
+            val sapClient = ClientFormParser.parse(eccState)
+            eccState.mutate(sapClient.TimeTableActions.Common().initialLoad())
+            eccState.mutate(sapClient.TimeTableActions.Common().selectTab(PageConstant.TimeTable.TabItem.LINKED_MAJOR))
+            return ComboBoxParser(PageConstant.TimeTable.COMBOBOX_LINKED_MAJOR).parse(eccState).keys
+        }
     }
 
     inner class CombinedMajor {
@@ -436,7 +588,7 @@ class TimeTableApi(val stateSupplier: suspend () -> State<String>) {
         /**
          * Find combined major(융합전공) lectures.
          * @param year desired year to find.
-         * @param semester desired semester to find. this value normally one of: ["1 학기", "여름학기", "2 학기", "겨울학기"]
+         * @param semester desired semester to find. this value is normally one of: ["1 학기", "여름학기", "2 학기", "겨울학기"]
          * @param major desired combined major to find.
          * @return Collection of [xyz.eatsteak.kusaint.model.LectureData]
          */
@@ -460,7 +612,7 @@ class TimeTableApi(val stateSupplier: suspend () -> State<String>) {
         /**
          * Find all combined major(융합전공) lectures.
          * @param year desired year to find.
-         * @param semester desired semester to find. this value normally one of: ["1 학기", "여름학기", "2 학기", "겨울학기"]
+         * @param semester desired semester to find. this value is normally one of: ["1 학기", "여름학기", "2 학기", "겨울학기"]
          * @return Map of CombinedMajorName paired with collection of [xyz.eatsteak.kusaint.model.LectureData]
          */
         suspend fun all(year: Int, semester: String): Map<String, Collection<LectureData>> {
@@ -478,6 +630,20 @@ class TimeTableApi(val stateSupplier: suspend () -> State<String>) {
             }
             return ret
         }
+
+        /**
+         * Gets a list of available combined majors.
+         * @return Collection of major names in String.
+         */
+        suspend fun getCombinedMajor(): Collection<String> {
+            val eccState: State<String> = stateSupplier().apply {
+                mutate(TimeTablePageNavigateAction)
+            }
+            val sapClient = ClientFormParser.parse(eccState)
+            eccState.mutate(sapClient.TimeTableActions.Common().initialLoad())
+            eccState.mutate(sapClient.TimeTableActions.Common().selectTab(PageConstant.TimeTable.TabItem.COMBINED_MAJOR))
+            return ComboBoxParser(PageConstant.TimeTable.COMBOBOX_COMBINED_MAJOR).parse(eccState).keys
+        }
     }
 
     inner class FindByProfessorName {
@@ -485,7 +651,7 @@ class TimeTableApi(val stateSupplier: suspend () -> State<String>) {
         /**
          * Find lectures by professor's name.
          * @param year desired year to find.
-         * @param semester desired semester to find. this value normally one of: ["1 학기", "여름학기", "2 학기", "겨울학기"]
+         * @param semester desired semester to find. this value is normally one of: ["1 학기", "여름학기", "2 학기", "겨울학기"]
          * @param professorName desired professor name to find.
          * @return Collection of [xyz.eatsteak.kusaint.model.LectureData]
          */
@@ -506,7 +672,7 @@ class TimeTableApi(val stateSupplier: suspend () -> State<String>) {
         /**
          * Find lectures by lecture name.
          * @param year desired year to find.
-         * @param semester desired semester to find. this value normally one of: ["1 학기", "여름학기", "2 학기", "겨울학기"]
+         * @param semester desired semester to find. this value is normally one of: ["1 학기", "여름학기", "2 학기", "겨울학기"]
          * @param lecture desired lecture name to find.
          * @return Collection of [xyz.eatsteak.kusaint.model.LectureData]
          */
@@ -527,7 +693,7 @@ class TimeTableApi(val stateSupplier: suspend () -> State<String>) {
         /**
          * Find recognized lectures of selected major.
          * @param year desired year to find.
-         * @param semester desired semester to find. this value normally one of: ["1 학기", "여름학기", "2 학기", "겨울학기"]
+         * @param semester desired semester to find. this value is normally one of: ["1 학기", "여름학기", "2 학기", "겨울학기"]
          * @param collage desired collage name to find.
          * @param department desired department name to find.
          * @param major desired major name to find. If only one major is exist for the department. then this value can be null.
@@ -575,7 +741,7 @@ class TimeTableApi(val stateSupplier: suspend () -> State<String>) {
         /**
          * Find recognized lectures of all majors.
          * @param year desired year to find.
-         * @param semester desired semester to find. this value normally one of: ["1 학기", "여름학기", "2 학기", "겨울학기"]
+         * @param semester desired semester to find. this value is normally one of: ["1 학기", "여름학기", "2 학기", "겨울학기"]
          * @return Map of [xyz.eatsteak.kusaint.model.MajorData] paired with collection of [xyz.eatsteak.kusaint.model.LectureData].
          */
         suspend fun all(year: Int, semester: String): Map<MajorData, Collection<LectureData>> {
@@ -613,7 +779,7 @@ class TimeTableApi(val stateSupplier: suspend () -> State<String>) {
         /**
          * Find dual listing lectures.
          * @param year desired year to find.
-         * @param semester desired semester to find. this value normally one of: ["1 학기", "여름학기", "2 학기", "겨울학기"]
+         * @param semester desired semester to find. this value is normally one of: ["1 학기", "여름학기", "2 학기", "겨울학기"]
          * @return Collection of [xyz.eatsteak.kusaint.model.LectureData]
          */
         suspend fun find(year: Int, semester: String): Collection<LectureData> {
