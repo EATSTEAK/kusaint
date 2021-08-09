@@ -21,9 +21,11 @@ jobs:
       with:
         java-version: '11'
         distribution: 'adopt'
+    - name: Grant execute permission for cert installation
+      run: chmod +x installCerts.sh
+    - name: Install certs
+      run: bash installCerts.sh
     - name: Grant execute permission for gradlew
       run: chmod +x gradlew
     - name: Build with Gradle
       run: ./gradlew build
-    - name: Check with Gradle
-      run: ./gradlew check
