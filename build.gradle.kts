@@ -55,14 +55,6 @@ kotlin {
                 }
             }
         }
-        publications {
-            matching { it.name in publicationsFromMainHost }.all {
-                val targetPublication = this@all
-                tasks.withType<AbstractPublishToMaven>()
-                    .matching { it.publication == targetPublication }
-                    .configureEach { onlyIf { findProperty("isMainHost") == "true" } }
-            }
-        }
     }
 
 
@@ -111,5 +103,9 @@ kotlin {
 tasks {
     withType<ProcessResources>().named("jsProcessResources") {
         into("$buildDir/js/packages/kusaint")
+    }
+
+    withType<org.jetbrains.kotlin.gradle.targets.js.npm.tasks.KotlinNpmInstallTask>().named("kotlinNpmInstall") {
+        dependsOn("jsProcessResources")
     }
 }
