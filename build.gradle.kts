@@ -3,6 +3,7 @@
 plugins {
     kotlin("multiplatform") version "1.5.21"
     id("org.jetbrains.dokka") version "1.5.0"
+    `maven-publish`
 }
 
 group = "xyz.eatsteak"
@@ -40,7 +41,31 @@ kotlin {
         binaries.executable()
     }
 
-    
+    val publicationsFromMainHost =
+        listOf(jvm(), js()).map { it.name } + "kotlinMultiplatform"
+
+    publishing {
+        repositories {
+            maven {
+                name = "GitHubPackages"
+                url = uri("https://maven.pkg.github.com/EATSTEAK/kusaint")
+                credentials {
+                    username = project.findProperty("gpr.user") as String? ?: System.getenv("USERNAME")
+                    password = project.findProperty("gpr.key") as String? ?: System.getenv("TOKEN")
+                }
+            }
+        }
+        publications {
+            matching { it.name in publicationsFromMainHost }.all {
+                val targetPublication = this@all
+                tasks.withType<AbstractPublishToMaven>()
+                    .matching { it.publication == targetPublication }
+                    .configureEach { onlyIf { findProperty("isMainHost") == "true" } }
+            }
+        }
+    }
+
+
     sourceSets {
         val commonMain by getting {
             dependencies {
