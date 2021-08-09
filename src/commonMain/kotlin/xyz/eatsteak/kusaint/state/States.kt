@@ -41,7 +41,6 @@ object States {
         state.mutate(PageNavigateAction("https://smartid.ssu.ac.kr"))
         val ssoForm = SsoFormParser.parse(state)
         state.mutate(SsoLoginAction(ssoForm, id, password))
-        state.mutate(SsoLoginAction(ssoForm, id, password))
         state.mutate(SaintSapTokenObtainAction(id))
         state
     }
