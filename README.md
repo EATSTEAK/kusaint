@@ -28,6 +28,7 @@ In JavaScript, kusaint automatically installs required certificates.
 ## JVM
 Add GitHub Packages repository with url `https://maven.pkg.github.com/EATSTEAK` and add the `xyz.eatsteak.kusaint-jvm` dependency.
 
+
 ### Maven
 ```xml
 <dependencies>
