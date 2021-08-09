@@ -116,8 +116,10 @@ class TimeTableApi(val stateSupplier: suspend () -> State<String>) {
             val ret = mutableMapOf<MajorData, Collection<LectureData>>()
             mutate(TimeTablePageNavigateAction)
             initialSemesterSelection(year, semester)
-            findOptionAndEach(COMBOBOX_COLLAGE) { collage, _ ->
-                findOptionAndEach(COMBOBOX_DEPARTMENT) { department, _ ->
+            findOptionAndEach(COMBOBOX_COLLAGE) { collage, collageKey ->
+                mutate(selectOption(COMBOBOX_COLLAGE, collageKey))
+                findOptionAndEach(COMBOBOX_DEPARTMENT) { department, departmentKey ->
+                    mutate(selectOption(COMBOBOX_DEPARTMENT, departmentKey))
                     findOptionAndEach(COMBOBOX_MAJOR) { major, majorKey ->
                         mutate(
                             pressButtonWithOption(
@@ -460,6 +462,7 @@ class TimeTableApi(val stateSupplier: suspend () -> State<String>) {
             initialSemesterSelection(year, semester)
             mutate(selectTab(TAB_ID, PageConstant.TimeTable.TabItem.GRADUATED_SCHOOL))
             findOptionAndEach(COMBOBOX_GRADUATED_SCHOOL) { school, schoolKey ->
+                mutate(selectOption(COMBOBOX_GRADUATED_SCHOOL, schoolKey))
                 findOptionAndEach(COMBOBOX_DEPARTMENT_GRADUATED_SCHOOL) { department, departmentKey ->
                     mutate(
                         pressButtonWithOption(
@@ -678,8 +681,10 @@ class TimeTableApi(val stateSupplier: suspend () -> State<String>) {
             mutate(TimeTablePageNavigateAction)
             initialSemesterSelection(year, semester)
             mutate(selectTab(TAB_ID, PageConstant.TimeTable.TabItem.RECOGNIZED_OTHER_MAJOR))
-            findOptionAndEach(COMBOBOX_COLLAGE_RECOGNIZED_OTHER_MAJOR) { collage, _ ->
-                findOptionAndEach(COMBOBOX_DEPARTMENT_RECOGNIZED_OTHER_MAJOR) { department, _ ->
+            findOptionAndEach(COMBOBOX_COLLAGE_RECOGNIZED_OTHER_MAJOR) { collage, collageKey ->
+                mutate(selectOption(COMBOBOX_COLLAGE_RECOGNIZED_OTHER_MAJOR, collageKey))
+                findOptionAndEach(COMBOBOX_DEPARTMENT_RECOGNIZED_OTHER_MAJOR) { department, departmentKey ->
+                    mutate(selectOption(COMBOBOX_DEPARTMENT_RECOGNIZED_OTHER_MAJOR, departmentKey))
                     findOptionAndEach(COMBOBOX_MAJOR_RECOGNIZED_OTHER_MAJOR) { major, majorKey ->
                         mutate(
                             pressButtonWithOption(
