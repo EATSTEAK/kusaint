@@ -10,12 +10,13 @@ import xyz.eatsteak.kusaint.action.ActionResult
 import xyz.eatsteak.kusaint.action.prerequisite.Prerequisite
 import xyz.eatsteak.kusaint.constant.appendSsoHeaders
 import xyz.eatsteak.kusaint.parser.SsoForm
+import xyz.eatsteak.kusaint.state.State
 
 class SsoLoginAction(val ssoForm: SsoForm, val id: String, val password: String) : Action<String> {
     override val prerequisite: Prerequisite = Prerequisite.EMPTY
 
 
-    override suspend fun launch(client: HttpClient, mutations: List<ActionResult<String>>): ActionResult<String> {
+    override suspend fun launch(client: HttpClient, state: State<String>): ActionResult<String> {
         val response = client.post<HttpResponse>("https://smartid.ssu.ac.kr/Symtra_sso/smln_pcs.asp") {
             headers {
                 appendSsoHeaders()
@@ -27,6 +28,6 @@ class SsoLoginAction(val ssoForm: SsoForm, val id: String, val password: String)
                 append("pwd", password)
             })
         }
-        return ActionResult(this::class, response, mutations.last().result, mutations)
+        return ActionResult(this::class, response, state.mutations.last().result, state.mutations)
     }
 }

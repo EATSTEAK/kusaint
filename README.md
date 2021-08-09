@@ -1,9 +1,9 @@
 # kusaint
 Soongsil University(SSU) u-Saint Parser with [Kotlin Multiplatform](https://kotlinlang.org/docs/multiplatform.html).
 
-# Prerequisites !!IMPORTANT!!
+# Prerequisites
 
-## JVM
+## JVM !!IMPORTANT!!
 To run kusaint as a library in JVM environment. You have to install DigiCert root CAs from [u-Saint](https://saint.ssu.ac.kr) or other ssu sites.
 
 This library won't disable ssl checks just because root CAs in ssu aren't included default keystore of JVM.
@@ -26,7 +26,8 @@ In JavaScript, kusaint automatically installs required certificates.
 # Installation
 
 ## JVM
-Add GitHub Packages repository with url `https://maven.pkg.github.com/EATSTEAK`, Add the dependency `xyz.eatsteak.kusaint-jvm`
+Add GitHub Packages repository with url `https://maven.pkg.github.com/EATSTEAK` and add the `xyz.eatsteak.kusaint-jvm` dependency.
+
 
 ### Maven
 ```xml
@@ -34,7 +35,7 @@ Add GitHub Packages repository with url `https://maven.pkg.github.com/EATSTEAK`,
     <dependency>
         <groupId>xyz.eatsteak</groupId>
         <artifactId>kusaint-jvm</artifactId>
-        <version>1.0.0</version>
+        <version>1.0.1</version>
     </dependency>
     <!-- Other dependencies... -->
 </dependencies>
@@ -43,7 +44,7 @@ Add GitHub Packages repository with url `https://maven.pkg.github.com/EATSTEAK`,
 ### Gradle (Groovy)
 ```groovy
 dependencies {
-    implementation 'xyz.eatsteak:kusaint-jvm:1.0.0'
+    implementation 'xyz.eatsteak:kusaint-jvm:1.0.1'
     // Other dependencies...
 }
 ```
@@ -51,7 +52,7 @@ dependencies {
 ### Gradle (Kotlin DSL)
 ```kotlin
 dependencies {
-    implementation("xyz.eatsteak:kusaint-jvm:1.0.0")
+    implementation("xyz.eatsteak:kusaint-jvm:1.0.1")
 }
 ```
 
@@ -65,9 +66,10 @@ For more info, please refer to [Docs](https://eatsteak.github.io/kusaint).
 
 ## Examples
 
+### Kotlin
 ```kotlin
 val kusaint = Kusaint()
 
-kusaint.timeTable.Major().find(2021, "2 학기", "IT대학", "글로벌미디어학부") // Find all lectures with given major.
-kusaint.timeTable.RequiredElectives().find(2021, "2 학기", "컴퓨팅적사고") // Find all required elective lectures with given lecture name.
+kusaint.timeTable.major.find(2021, "2 학기", "IT대학", "글로벌미디어학부") // Find all lectures with given major.
+kusaint.timeTable.requiredElectives.find(2021, "2 학기", "컴퓨팅적사고") // Find all required elective lectures with given lecture name.
 ```

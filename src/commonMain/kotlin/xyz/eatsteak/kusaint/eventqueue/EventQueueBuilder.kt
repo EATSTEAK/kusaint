@@ -8,12 +8,12 @@ class EventQueueBuilder(block: EventQueueBuilder.() -> Unit) {
         block.invoke(this)
     }
 
-    fun addEvent(controlName: String, eventName: String, block: EventBuilder.() -> Unit) {
+    fun add(controlName: String, eventName: String, block: EventBuilder.() -> Unit) {
         val eventBuilder = EventBuilder(controlName, eventName, block)
-        addEvent(eventBuilder)
+        add(eventBuilder)
     }
 
-    fun addEvent(event: EventBuilder) {
+    fun add(event: EventBuilder) {
         if (builder.isNotEmpty()) builder.append(EVENT_SPECTATOR)
         builder.append(event.build())
     }

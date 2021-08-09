@@ -33,7 +33,7 @@ class EventQueueTests {
     fun eventQueueBuildTest() {
         val test = listOf(
             EventQueueBuilder {
-                addEvent("Custom", "ClientInfos") {
+                add("Custom", "ClientInfos") {
                     parameter("Id", "WD01")
                     parameter("WindowOpenerExists", "false")
                     parameter("ClientURL", "https://ecc.ssu.ac.kr/sap/bc/webdynpro/sap/zcmw2100?sap-language=KO#")
@@ -48,7 +48,7 @@ class EventQueueTests {
                         responseData = UcfResponseData.DELTA
                     }
                 }
-                addEvent("ClientInspector", "Notify") {
+                add("ClientInspector", "Notify") {
                     parameter("Id", "WD01")
                     parameter("Data", "SapThemeID:sap_fiori_3")
 
@@ -57,7 +57,7 @@ class EventQueueTests {
                         enqueueCardinality = UcfCardinality.SINGLE
                     }
                 }
-                addEvent("ComboBox", "Select") {
+                add("ComboBox", "Select") {
                     parameter("Id", "WDDD")
                     parameter("Key", "092")
                     parameter("ByEnter", "false")
@@ -67,7 +67,7 @@ class EventQueueTests {
                         action = UcfAction.SUBMIT
                     }
                 }
-                addEvent("Form", "Request") {
+                add("Form", "Request") {
                     parameter("Id", "sap.client.SsrClient.form")
                     parameter("Async", "false")
                     parameter("FocusInfo", "@{\"iSelectionStart\":0,\"iSelectionEnd\":0,\"iCursorPos\":0,\"sValue\":\"2 학기\",\"sFocussedId\":\"WDDD\",\"sApplyControlId\":\"WDDD\"}")
