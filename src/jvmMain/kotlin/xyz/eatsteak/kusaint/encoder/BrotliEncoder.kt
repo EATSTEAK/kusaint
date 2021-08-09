@@ -8,7 +8,7 @@ import kotlinx.coroutines.CoroutineScope
 import org.brotli.dec.BrotliInputStream
 import java.nio.ByteBuffer
 
-actual object BrotliEncoder : ContentEncoder {
+internal actual object BrotliEncoder : ContentEncoder {
     override val name: String
         get() = "br"
 

@@ -1,14 +1,14 @@
 package xyz.eatsteak.kusaint
 
-external fun require(name: String): dynamic
-external val __dirname: dynamic
+internal external fun require(name: String): dynamic
+internal external val __dirname: dynamic
 
-actual object PlatformInit {
+internal actual object PlatformInit {
 
-    actual var isReady = false
+    internal actual var isReady = false
 
-    val rootCas = require("ssl-root-cas").create()
-    val https = require("https")
+    private val rootCas = require("ssl-root-cas").create()
+    private val https = require("https")
 
     init {
         rootCas
