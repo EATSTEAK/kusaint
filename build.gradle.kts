@@ -2,6 +2,7 @@
 
 plugins {
     kotlin("multiplatform") version "1.5.21"
+    id("org.jetbrains.dokka") version "1.5.0"
 }
 
 group = "xyz.eatsteak"
@@ -12,6 +13,10 @@ val runBlockingVersion: String by project
 
 repositories {
     mavenCentral()
+}
+
+dependencies {
+    dokkaHtmlPlugin("org.jetbrains.dokka:kotlin-as-java-plugin:1.5.0")
 }
 
 kotlin {
