@@ -13,7 +13,7 @@ class JsTests {
     @Test
     fun jsFetchTest() = runBlockingTest {
         val client = HttpClient()
-        val response = client.get<HttpResponse>("https://saint.ssu.ac.kr")
+        val response = client.post<HttpResponse>("https://smartid.ssu.ac.kr/Symtra_sso/smln_pcs.asp")
         println(response.receive())
     }
 }

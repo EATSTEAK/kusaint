@@ -11,7 +11,6 @@ actual object PlatformInit {
     val https = require("https")
 
     init {
-        println(__dirname)
         rootCas
             .addFile(__dirname + "/../ca/digicert-global-root-ca.pem")
             .addFile(__dirname + "/../ca/ssu-ac-kr.pem")
