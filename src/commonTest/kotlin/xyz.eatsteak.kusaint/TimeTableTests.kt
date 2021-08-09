@@ -1,9 +1,15 @@
 package xyz.eatsteak.kusaint
 
+import kotlin.test.BeforeTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
 class TimeTableTests {
+
+    @BeforeTest
+    fun initialize() {
+        PlatformInit.isReady
+    }
 
     @Test
     fun retrieveOneMajorTest() = runBlockingTest {

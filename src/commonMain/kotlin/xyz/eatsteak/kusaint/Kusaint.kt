@@ -13,6 +13,10 @@ import xyz.eatsteak.kusaint.state.States
  */
 class Kusaint(id: String? = null, password: String? = null) {
 
+    init {
+        PlatformInit.isReady
+    }
+
     private val stateSupplier: suspend () -> State<String> =
         if (id == null || password == null) States.eccAnonymousState() else States.eccAuthenticatedState(id, password)
 
