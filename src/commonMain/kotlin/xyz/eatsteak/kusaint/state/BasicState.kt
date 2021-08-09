@@ -23,8 +23,7 @@ class BasicState(requestConfig: HttpClientConfig<*>.() -> Unit) : State<String> 
 
     override suspend fun mutate(action: Action<String>): BasicState {
         if (!action.prerequisite.isMatched(mutations)) throw IllegalStateException("This action cannot be applied for current state.")
-        val currentMutations = actions.toList()
-        val result = action.launch(client, currentMutations)
+        val result = action.launch(client, this)
         actions.add(result)
         return this
     }
