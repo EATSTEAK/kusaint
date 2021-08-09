@@ -21,6 +21,7 @@ class TimeTableTests {
     @Test
     fun retrieveAllMajorsTest() = runBlockingTest {
         val timeTableData = Kusaint().timeTable.Major().all(2021, "2 학기")
+        assertEquals(true, timeTableData.isNotEmpty())
         timeTableData.entries.forEach {
             assertEquals(true, it.value.isNotEmpty())
         }

@@ -1,3 +1,5 @@
+@file:Suppress("UNUSED_VARIABLE")
+
 plugins {
     kotlin("multiplatform") version "1.5.21"
 }
@@ -25,6 +27,9 @@ kotlin {
         nodejs {
             testTask {
                 debug = false
+                useMocha {
+                    timeout = "10000000"
+                }
             }
         }
         binaries.executable()

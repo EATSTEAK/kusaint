@@ -23,7 +23,7 @@ actual fun updatePage(original: String, updateResponse: String): String {
                             // println("[INFO] Executing control-update on content $contentId")
                             target.html(it.html().replace("<![CDATA[", "").replace("]]>", ""))
                         } else {
-                            println("[WARN] content update target is null. target: $target")
+                            println("[WARN] content update target is null. contentId: $contentId")
                         }
                     }
                 }
