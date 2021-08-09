@@ -18,7 +18,7 @@ fun HeadersBuilder.appendEccHeaders() {
 
 fun HeadersBuilder.appendEccXhrHeaders() {
     append("Accept", "*/*")
-    append("Accept-Encoding", "gzip, deflat, br")
+    append("Accept-Encoding", "gzip, deflate, br")
     append("Accept-Language", "ko-KR,ko;q=0.8,en-US;q=0.5,en;q=0.3")
     append("Connection", "keep-alive")
     append("DNT", "1")
