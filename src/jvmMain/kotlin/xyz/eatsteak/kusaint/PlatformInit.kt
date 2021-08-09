@@ -1,7 +1,7 @@
 package xyz.eatsteak.kusaint
 
-actual object PlatformInit {
+internal actual object PlatformInit {
 
-    actual var isReady = true
+    internal actual var isReady = true
     // DO NOTHING.
 }
