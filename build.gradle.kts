@@ -25,9 +25,6 @@ kotlin {
         nodejs {
             testTask {
                 debug = false
-                useMocha {
-                    timeout = "100000"
-                }
             }
         }
         binaries.executable()
