@@ -25,6 +25,9 @@ kotlin {
         nodejs {
             testTask {
                 debug = false
+                useMocha {
+                    timeout = "100000"
+                }
             }
         }
         binaries.executable()
@@ -61,7 +64,8 @@ kotlin {
             dependencies {
                 implementation(kotlin("stdlib-js"))
                 implementation("io.ktor:ktor-client-js:$ktorVersion")
-                implementation(npm("brotli", "1.3.2"))
+                implementation(npm("ssl-root-cas", "1.3.1"))
+                implementation(npm("jsdom", "16.7.0"))
             }
         }
         val jsTest by getting {
@@ -69,5 +73,11 @@ kotlin {
                 implementation(kotlin("test-js"))
             }
         }
+    }
+}
+
+tasks {
+    withType<ProcessResources>().named("jsProcessResources") {
+        into("$buildDir/js/packages/kusaint")
     }
 }
