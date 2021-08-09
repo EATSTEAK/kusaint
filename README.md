@@ -34,7 +34,7 @@ Add GitHub Packages repository with url `https://maven.pkg.github.com/EATSTEAK` 
     <dependency>
         <groupId>xyz.eatsteak</groupId>
         <artifactId>kusaint-jvm</artifactId>
-        <version>1.0.0</version>
+        <version>1.0.1</version>
     </dependency>
     <!-- Other dependencies... -->
 </dependencies>
@@ -43,7 +43,7 @@ Add GitHub Packages repository with url `https://maven.pkg.github.com/EATSTEAK` 
 ### Gradle (Groovy)
 ```groovy
 dependencies {
-    implementation 'xyz.eatsteak:kusaint-jvm:1.0.0'
+    implementation 'xyz.eatsteak:kusaint-jvm:1.0.1'
     // Other dependencies...
 }
 ```
@@ -51,7 +51,7 @@ dependencies {
 ### Gradle (Kotlin DSL)
 ```kotlin
 dependencies {
-    implementation("xyz.eatsteak:kusaint-jvm:1.0.0")
+    implementation("xyz.eatsteak:kusaint-jvm:1.0.1")
 }
 ```
 
