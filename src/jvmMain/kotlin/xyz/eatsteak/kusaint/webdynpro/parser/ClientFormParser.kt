@@ -1,9 +1,10 @@
-package xyz.eatsteak.kusaint.parser
+package xyz.eatsteak.kusaint.webdynpro.parser
 
 import io.ktor.http.*
 import org.jsoup.Jsoup
-import xyz.eatsteak.kusaint.eventqueue.model.SapClient
+import xyz.eatsteak.kusaint.parser.Parser
 import xyz.eatsteak.kusaint.state.State
+import xyz.eatsteak.kusaint.webdynpro.eventqueue.model.SapClient
 
 actual object ClientFormParser : Parser<String, SapClient> {
     actual override suspend fun parse(state: State<String>): SapClient {
