@@ -1,4 +1,5 @@
 package xyz.eatsteak.kusaint.action
 
-object TimeTablePageNavigateAction :
-    PageNavigateAction("https://ecc.ssu.ac.kr/sap/bc/webdynpro/sap/zcmw2100?sap-language=KO#")
+import xyz.eatsteak.kusaint.webdynpro.app.WebDynProApplication
+
+class WebDynProAppNavigateAction(val app: WebDynProApplication): PageNavigateAction(app.appUrl)
