@@ -1,5 +1,8 @@
 package xyz.eatsteak.kusaint.model
 
+import kotlinx.serialization.Serializable
+
+@Serializable
 data class LectureData(
     val syllabus: String, // 계획
     val lectureTypeMajor: String, // 이수구분(주전공)
