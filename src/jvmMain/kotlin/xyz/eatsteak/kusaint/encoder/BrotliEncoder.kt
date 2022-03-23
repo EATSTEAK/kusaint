@@ -1,3 +1,5 @@
+@file:OptIn(ExperimentalIoApi::class)
+
 package xyz.eatsteak.kusaint.encoder
 
 import io.ktor.client.features.compression.*
@@ -12,7 +14,6 @@ internal actual object BrotliEncoder : ContentEncoder {
     override val name: String
         get() = "br"
 
-    @ExperimentalIoApi
     override fun CoroutineScope.decode(source: ByteReadChannel): ByteReadChannel {
         val inputStream = source.toInputStream()
         return BrotliInputStream(inputStream).toByteReadChannel()

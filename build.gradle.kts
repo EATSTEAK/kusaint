@@ -1,8 +1,9 @@
 @file:Suppress("UNUSED_VARIABLE")
 
 plugins {
-    kotlin("multiplatform") version "1.5.21"
-    id("org.jetbrains.dokka") version "1.5.0"
+    kotlin("multiplatform") version "1.6.0"
+    id("org.jetbrains.dokka") version "1.6.0"
+    kotlin("plugin.serialization") version "1.6.10"
     `maven-publish`
 }
 
@@ -17,7 +18,7 @@ repositories {
 }
 
 dependencies {
-    dokkaHtmlPlugin("org.jetbrains.dokka:kotlin-as-java-plugin:1.5.0")
+    dokkaHtmlPlugin("org.jetbrains.dokka:kotlin-as-java-plugin:1.6.0")
 }
 
 kotlin {
@@ -59,11 +60,15 @@ kotlin {
 
 
     sourceSets {
+        all {
+            languageSettings.optIn("kotlin.RequiresOptIn")
+        }
         val commonMain by getting {
             dependencies {
                 implementation("io.ktor:ktor-client-core:$ktorVersion")
                 implementation("io.ktor:ktor-client-encoding:$ktorVersion")
                 implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.1")
+                implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.2")
                 kotlin("reflect")
             }
         }
@@ -78,6 +83,7 @@ kotlin {
                 implementation("org.brotli:dec:0.1.2")
                 implementation("org.brotli:parent:0.1.2")
                 implementation("org.jsoup:jsoup:1.14.1")
+                implementation("de.brudaswen.kotlinx.serialization:kotlinx-serialization-csv:2.0.0")
             }
         }
         val jvmTest by getting {

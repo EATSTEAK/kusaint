@@ -1,11 +1,12 @@
-package xyz.eatsteak.kusaint.parser
+package xyz.eatsteak.kusaint.webdynpro.parser
 
 import io.ktor.http.*
 import org.w3c.dom.ItemArrayLike
 import org.w3c.dom.asList
-import xyz.eatsteak.kusaint.eventqueue.model.SapClient
+import xyz.eatsteak.kusaint.parser.Parser
 import xyz.eatsteak.kusaint.state.State
 import xyz.eatsteak.kusaint.util.JSDOM
+import xyz.eatsteak.kusaint.webdynpro.eventqueue.model.SapClient
 
 actual object ClientFormParser: Parser<String, SapClient> {
 

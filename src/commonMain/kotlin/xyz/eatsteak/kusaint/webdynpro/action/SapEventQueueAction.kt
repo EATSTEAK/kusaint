@@ -1,4 +1,4 @@
-package xyz.eatsteak.kusaint.action.sap
+package xyz.eatsteak.kusaint.webdynpro.action
 
 import io.ktor.client.*
 import io.ktor.client.call.*
@@ -10,9 +10,9 @@ import xyz.eatsteak.kusaint.action.Action
 import xyz.eatsteak.kusaint.action.ActionResult
 import xyz.eatsteak.kusaint.action.prerequisite.Prerequisite
 import xyz.eatsteak.kusaint.constant.appendEccXhrHeaders
-import xyz.eatsteak.kusaint.eventqueue.EventQueueBuilder
-import xyz.eatsteak.kusaint.eventqueue.model.SapClient
-import xyz.eatsteak.kusaint.parser.ClientFormParser
+import xyz.eatsteak.kusaint.webdynpro.eventqueue.EventQueueBuilder
+import xyz.eatsteak.kusaint.webdynpro.eventqueue.model.SapClient
+import xyz.eatsteak.kusaint.webdynpro.parser.ClientFormParser
 import xyz.eatsteak.kusaint.state.State
 import xyz.eatsteak.kusaint.util.updatePage
 

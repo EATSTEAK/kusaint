@@ -1,4 +1,4 @@
-package xyz.eatsteak.kusaint.eventqueue.model
+package xyz.eatsteak.kusaint.webdynpro.eventqueue.model
 
 data class SapClient(
     val action: String,

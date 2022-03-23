@@ -1,8 +1,6 @@
 package xyz.eatsteak.kusaint.parser
 
-import io.ktor.http.*
 import org.jsoup.Jsoup
-import xyz.eatsteak.kusaint.eventqueue.model.SapClient
 import xyz.eatsteak.kusaint.state.State
 
 actual object SsoFormParser : Parser<String, SsoForm> {

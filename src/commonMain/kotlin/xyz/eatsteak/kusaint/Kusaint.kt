@@ -4,6 +4,7 @@ import xyz.eatsteak.kusaint.api.RecordApi
 import xyz.eatsteak.kusaint.api.TimeTableApi
 import xyz.eatsteak.kusaint.state.State
 import xyz.eatsteak.kusaint.state.States
+import xyz.eatsteak.kusaint.webdynpro.app.TimeTableApplication
 
 /**
  * Main api instance for Kusaint.
@@ -24,7 +25,7 @@ class Kusaint(id: String? = null, password: String? = null) {
      * Returns [xyz.eatsteak.kusaint.api.TimeTableApi] instance with given authentication.
      */
     val timeTable by lazy {
-        TimeTableApi(stateSupplier)
+        TimeTableApi(TimeTableApplication(), stateSupplier)
     }
 
     /**
