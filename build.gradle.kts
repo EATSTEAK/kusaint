@@ -8,7 +8,7 @@ plugins {
 }
 
 group = "xyz.eatsteak"
-version = "1.0.1"
+version = "1.1.0"
 
 val ktorVersion: String by project
 val runBlockingVersion: String by project
