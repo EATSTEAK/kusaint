@@ -14,3 +14,7 @@ fun String.toEventQueueString(): String = this.fold(StringBuilder()) { builder, 
         builder.append("~${char.code.toString(16).uppercase().padStart(4, '0')}")
     }
 }.toString()
+
+fun String.fromEventQueueString(): String = Regex("~([A-z0-9]{4})").replace(this) {
+    it.value.replace("~", "").toInt(16).toChar().toString()
+}
