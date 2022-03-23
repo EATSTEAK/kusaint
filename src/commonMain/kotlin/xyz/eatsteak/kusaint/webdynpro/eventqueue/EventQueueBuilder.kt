@@ -1,4 +1,4 @@
-package xyz.eatsteak.kusaint.eventqueue
+package xyz.eatsteak.kusaint.webdynpro.eventqueue
 
 class EventQueueBuilder(block: EventQueueBuilder.() -> Unit) {
 
@@ -16,6 +16,12 @@ class EventQueueBuilder(block: EventQueueBuilder.() -> Unit) {
     fun add(event: EventBuilder) {
         if (builder.isNotEmpty()) builder.append(EVENT_SPECTATOR)
         builder.append(event.build())
+    }
+
+    infix fun append(queue: EventQueueBuilder): EventQueueBuilder {
+        builder.append(EVENT_SPECTATOR)
+        builder.append(queue.builder)
+        return this
     }
 
     fun build(): String {

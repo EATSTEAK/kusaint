@@ -1,6 +1,6 @@
-package xyz.eatsteak.kusaint.eventqueue
+package xyz.eatsteak.kusaint.webdynpro.eventqueue
 
-import xyz.eatsteak.kusaint.eventqueue.model.UcfParameters
+import xyz.eatsteak.kusaint.webdynpro.eventqueue.model.UcfParameters
 
 class EventBuilder(private val controlName: String, private val eventName: String, block: EventBuilder.() -> Unit) {
 

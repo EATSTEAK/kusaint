@@ -1,4 +1,4 @@
-package xyz.eatsteak.kusaint.eventqueue
+package xyz.eatsteak.kusaint.webdynpro.eventqueue
 
 const val EVENT_SPECTATOR = "~E001"
 const val EVENT_DATA_START = "~E002"

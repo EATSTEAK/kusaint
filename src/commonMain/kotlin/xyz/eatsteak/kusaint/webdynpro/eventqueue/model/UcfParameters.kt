@@ -1,9 +1,9 @@
-package xyz.eatsteak.kusaint.eventqueue.model
+package xyz.eatsteak.kusaint.webdynpro.eventqueue.model
 
-import xyz.eatsteak.kusaint.eventqueue.EVENT_DATA_COLON
-import xyz.eatsteak.kusaint.eventqueue.EVENT_DATA_COMMA
-import xyz.eatsteak.kusaint.eventqueue.EVENT_DATA_END
-import xyz.eatsteak.kusaint.eventqueue.EVENT_DATA_START
+import xyz.eatsteak.kusaint.webdynpro.eventqueue.EVENT_DATA_COLON
+import xyz.eatsteak.kusaint.webdynpro.eventqueue.EVENT_DATA_COMMA
+import xyz.eatsteak.kusaint.webdynpro.eventqueue.EVENT_DATA_END
+import xyz.eatsteak.kusaint.webdynpro.eventqueue.EVENT_DATA_START
 
 data class UcfParameters(
     var action: UcfAction? = null,
